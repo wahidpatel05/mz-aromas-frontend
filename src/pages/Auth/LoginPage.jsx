@@ -1,4 +1,5 @@
-// src/pages/Auth/LoginPage.jsx
+// src/pages/Auth/LoginPage.jsx - FIXED VERSION
+
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,10 +17,13 @@ const LoginPage = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const { isAuthenticated, loading } = useSelector((state) => state.auth);
+  const { isAuthenticated, loading, error } = useSelector(
+    (state) => state.auth
+  );
 
-  const from = location.state?.from || "/";
+  const from = location.state?.from?.pathname || "/";
 
+  // Redirect agar already logged in hai
   useEffect(() => {
     if (isAuthenticated) {
       navigate(from, { replace: true });
@@ -35,11 +39,18 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Basic validation
+    if (!formData.email || !formData.password) {
+      return;
+    }
+
+    // Redux action dispatch
     dispatch(loginUser(formData));
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-accent-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-8">
@@ -54,67 +65,84 @@ const LoginPage = () => {
           <p className="text-gray-600">Login to your account</p>
         </div>
 
-        {/* Login Form */}
-        <div className="bg-white rounded-xl shadow-lg p-8">
+        {/* Login Form Card */}
+        <div className="bg-white rounded-xl shadow-xl p-8 border border-gray-100">
+          {/* Error Display */}
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-sm text-red-600 text-center">{error}</p>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email */}
+            {/* Email Field */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Email Address
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiMail className="text-gray-400" />
+                  <FiMail className="text-gray-400" size={20} />
                 </div>
                 <input
                   type="email"
+                  id="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="input-field pl-10"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
                   placeholder="your@email.com"
                   required
+                  autoComplete="email"
                 />
               </div>
             </div>
 
-            {/* Password */}
+            {/* Password Field */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiLock className="text-gray-400" />
+                  <FiLock className="text-gray-400" size={20} />
                 </div>
                 <input
                   type={showPassword ? "text" : "password"}
+                  id="password"
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="input-field pl-10 pr-10"
+                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
                   placeholder="••••••••"
                   required
+                  autoComplete="current-password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center hover:text-primary-600 transition-colors"
                 >
                   {showPassword ? (
-                    <FiEyeOff className="text-gray-400" />
+                    <FiEyeOff className="text-gray-400" size={20} />
                   ) : (
-                    <FiEye className="text-gray-400" />
+                    <FiEye className="text-gray-400" size={20} />
                   )}
                 </button>
               </div>
             </div>
 
-            {/* Forgot Password */}
+            {/* Forgot Password Link */}
             <div className="flex justify-end">
               <Link
                 to="/forgot-password"
-                className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                className="text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors"
               >
                 Forgot Password?
               </Link>
@@ -124,9 +152,35 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full btn-primary py-3 text-lg"
+              className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-4 rounded-lg font-semibold hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
-              {loading ? "Logging in..." : "Login"}
+              {loading ? (
+                <>
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Logging in...
+                </>
+              ) : (
+                "Login"
+              )}
             </button>
           </form>
 
@@ -143,10 +197,11 @@ const LoginPage = () => {
               </div>
             </div>
 
+            {/* Register Link */}
             <div className="mt-6">
               <Link
                 to="/register"
-                className="w-full btn-secondary py-3 text-lg text-center block"
+                className="w-full border-2 border-primary-600 text-primary-600 py-3 px-4 rounded-lg font-semibold hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all text-center block"
               >
                 Create Account
               </Link>
