@@ -36,18 +36,18 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-50">
       {/* Mobile Header */}
-      <div className="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-50">
+      <div className="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-50 shadow-sm">
         <Link
           to="/"
-          className="text-2xl font-display font-bold text-primary-700"
+          className="text-2xl font-display font-bold text-amber-700 tracking-wide"
         >
           MZ Aromas
         </Link>
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="text-gray-600 hover:text-gray-900"
+          className="text-gray-600 hover:text-gray-900 transition"
         >
           {isSidebarOpen ? <FiX size={24} /> : <FiMenu size={24} />}
         </button>
@@ -56,34 +56,34 @@ const AdminLayout = () => {
       <div className="flex">
         {/* Sidebar */}
         <aside
-          className={`fixed lg:sticky top-0 left-0 h-screen w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 z-40 ${
+          className={`fixed lg:sticky top-0 left-0 h-screen w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out z-40 shadow-sm ${
             isSidebarOpen
               ? "translate-x-0"
               : "-translate-x-full lg:translate-x-0"
           }`}
         >
           {/* Logo */}
-          <div className="hidden lg:block p-6 border-b border-gray-200">
+          <div className="hidden lg:block p-6 border-b border-gray-100">
             <Link
               to="/"
-              className="text-2xl font-display font-bold text-primary-700"
+              className="text-2xl font-display font-bold text-amber-700"
             >
               MZ Aromas
             </Link>
-            <p className="text-sm text-gray-600 mt-1">Admin Panel</p>
+            <p className="text-sm text-gray-500 mt-1">Admin Panel</p>
           </div>
 
           {/* User Info */}
-          <div className="p-6 border-b border-gray-200">
+          <div className="p-6 border-b border-gray-100">
             <div className="flex items-center space-x-3">
               <img
                 src={user?.avatar?.url || "/images/default-avatar.png"}
                 alt={user?.name}
-                className="w-12 h-12 rounded-full border-2 border-primary-100"
+                className="w-12 h-12 rounded-full border-2 border-amber-100"
               />
               <div>
                 <p className="font-semibold text-gray-900">{user?.name}</p>
-                <p className="text-xs text-gray-600 capitalize">{user?.role}</p>
+                <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
               </div>
             </div>
           </div>
@@ -93,19 +93,18 @@ const AdminLayout = () => {
             {menuItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
-
               return (
                 <Link
                   key={item.path}
                   to={item.path}
                   onClick={() => setIsSidebarOpen(false)}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                     isActive
-                      ? "bg-primary-50 text-primary-700 font-semibold"
-                      : "text-gray-700 hover:bg-gray-50"
+                      ? "bg-amber-50 text-amber-700 shadow-sm"
+                      : "text-gray-700 hover:bg-gray-50 hover:text-amber-600"
                   }`}
                 >
-                  <Icon size={20} />
+                  <Icon size={19} />
                   <span>{item.label}</span>
                 </Link>
               );
@@ -113,19 +112,19 @@ const AdminLayout = () => {
           </nav>
 
           {/* Bottom Actions */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
+          <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-100 bg-white">
             <Link
               to="/"
-              className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors mb-2"
+              className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-amber-600 transition-colors mb-2 text-sm"
             >
-              <FiHome size={20} />
+              <FiHome size={19} />
               <span>Back to Store</span>
             </Link>
             <button
               onClick={handleLogout}
-              className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
+              className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors text-sm"
             >
-              <FiLogOut size={20} />
+              <FiLogOut size={19} />
               <span>Logout</span>
             </button>
           </div>
@@ -134,13 +133,13 @@ const AdminLayout = () => {
         {/* Overlay for mobile */}
         {isSidebarOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+            className="fixed inset-0 bg-black bg-opacity-40 z-30 lg:hidden backdrop-blur-sm"
             onClick={() => setIsSidebarOpen(false)}
           />
         )}
 
         {/* Main Content */}
-        <main className="flex-1 p-6 lg:p-8">
+        <main className="flex-1 p-6 lg:p-8 bg-gray-50">
           <Outlet />
         </main>
       </div>

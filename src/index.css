@@ -1,84 +1,43 @@
-/* src/index.css - Tailwind v4 compatible */
-
-/* 1) Tailwind runtime + preflight + utilities */
-@import "tailwindcss";
-@import "tailwindcss/preflight";
-@import "tailwindcss/utilities";
-
-/* 2) Load Google fonts (keep before theme if you want them ready) */
+/* 1️⃣ Import Google Fonts */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800&display=swap");
 
-/* 3) Define theme variables that generate utilities like `font-body` and `text-primary-600` */
-/*    IMPORTANT: this must appear before you use those utilities with @apply */
-@theme {
-  /* fonts -> creates `font-body` and `font-display` utilities */
-  --font-body: Inter, sans-serif;
-  --font-display: "Playfair Display", serif;
+/* 2️⃣ Tailwind (new v4 syntax) */
+@import "tailwindcss";
 
-  /* primary color scale (example subset — add more as you need) */
-  --color-primary-50: #faf7f4;
-  --color-primary-100: #f5efe8;
-  --color-primary-200: #e8dac7;
-  --color-primary-300: #dbc5a6;
-  --color-primary-400: #c19b64;
-  --color-primary-500: #a77142;
-  --color-primary-600: #8f5c35;
-  --color-primary-700: #77492c;
-  --color-primary-800: #5f3a25;
-  --color-primary-900: #4d2f1f;
-}
-
-/* 4) Now use @layer and @apply — Tailwind already generated `font-body`, `font-display`, colors, etc. */
-@layer base {
-  body {
-    @apply font-body text-gray-800 bg-gray-50;
+/* 3️⃣ Custom Utilities */
+@layer utilities {
+  /* Fade-up animation */
+  @keyframes fadeUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-display;
-  }
-}
-
-@layer components {
-  .btn-primary {
-    @apply bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  .animate-fadeUp {
+    animation: fadeUp 0.8s ease-out forwards;
   }
 
-  .btn-secondary {
-    @apply bg-white hover:bg-gray-50 text-primary-700 px-6 py-3 rounded-lg font-medium border-2 border-primary-600 transition-all duration-200;
+  /* Marquee animation */
+  @keyframes marquee {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
   }
 
-  .input-field {
-    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all;
+  .animate-marquee {
+    display: inline-block;
+    animation: marquee 25s linear infinite;
   }
 
-  .card {
-    @apply bg-white rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300;
+  .animate-marquee:hover {
+    animation-play-state: paused;
   }
-}
-
-/* your global resets and scrollbar styling */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-::-webkit-scrollbar-thumb {
-  background: #8f5c35;
-  border-radius: 5px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #77492c;
 }

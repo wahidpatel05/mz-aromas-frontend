@@ -1,4 +1,3 @@
-// src/components/Product/ProductCard.jsx
 import React from "react";
 import { Link } from "react-router-dom";
 import { FiHeart, FiShoppingCart, FiStar } from "react-icons/fi";
@@ -23,7 +22,6 @@ const ProductCard = ({ product }) => {
     e.preventDefault();
 
     if (product.variants && product.variants.length > 0) {
-      // If product has variants, redirect to product page
       return;
     }
 
@@ -65,47 +63,38 @@ const ProductCard = ({ product }) => {
       : 0;
 
   return (
-    <div className="card overflow-hidden group">
+    <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group">
       <Link to={`/product/${product.slug}`} className="block">
         {/* Image Section */}
-        <div className="relative overflow-hidden bg-gray-100">
+        <div className="relative bg-[#fafafa] overflow-hidden">
           <img
             src={product.images[0]?.url}
             alt={product.name}
-            className="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-500"
+            className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-500"
           />
 
           {/* Discount Badge */}
           {discount > 0 && (
-            <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+            <div className="absolute top-3 left-3 bg-pink-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
               {discount}% OFF
-            </div>
-          )}
-
-          {/* Featured Badge */}
-          {product.featured && (
-            <div className="absolute top-3 right-3 bg-accent-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-              Featured
             </div>
           )}
 
           {/* Wishlist Button */}
           <button
             onClick={handleWishlist}
-            className={`absolute top-3 right-3 ${
-              product.featured ? "top-14" : ""
-            } bg-white p-2 rounded-full shadow-lg hover:bg-red-50 transition-colors ${
-              isInWishlist ? "text-red-500" : "text-gray-600"
+            className={`absolute top-3 right-3 bg-white p-2 rounded-full shadow-sm hover:bg-pink-50 transition-colors ${
+              isInWishlist ? "text-pink-500" : "text-gray-600"
             }`}
           >
             <FiHeart size={20} fill={isInWishlist ? "currentColor" : "none"} />
           </button>
 
-          {/* Quick Actions */}
-          <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/70 to-transparent p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+          {/* Quick Add to Cart */}
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white/95 to-transparent opacity-0 group-hover:opacity-100 p-4 transition-opacity duration-300">
             <button
               onClick={handleAddToCart}
-              className="w-full bg-white text-primary-700 py-2 rounded-lg font-semibold hover:bg-primary-50 transition-colors flex items-center justify-center space-x-2"
+              className="w-full bg-pink-500 text-white py-2 rounded-xl font-medium hover:bg-pink-600 transition-colors flex items-center justify-center gap-2"
             >
               <FiShoppingCart />
               <span>
@@ -117,51 +106,43 @@ const ProductCard = ({ product }) => {
 
         {/* Product Info */}
         <div className="p-4">
-          {/* Category */}
-          <p className="text-xs text-primary-600 font-semibold uppercase tracking-wide mb-1">
+          <p className="text-xs text-pink-600 font-medium uppercase tracking-wide mb-1">
             {product.category?.name}
           </p>
 
-          {/* Product Name */}
-          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 h-12">
+          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 h-12 leading-snug">
             {product.name}
           </h3>
 
-          {/* Rating */}
-          <div className="flex items-center space-x-2 mb-3">
-            <div className="flex items-center space-x-1">
-              <FiStar className="text-yellow-500 fill-yellow-500" size={16} />
-              <span className="text-sm font-medium text-gray-700">
-                {product.ratings?.toFixed(1) || "0.0"}
-              </span>
-            </div>
-            <span className="text-xs text-gray-500">
-              ({product.numOfReviews || 0} reviews)
+          <div className="flex items-center space-x-2 mb-2">
+            <FiStar className="text-yellow-400 fill-yellow-400" size={16} />
+            <span className="text-sm font-medium text-gray-700">
+              {product.ratings?.toFixed(1) || "0.0"}
+            </span>
+            <span className="text-xs text-gray-400">
+              ({product.numOfReviews || 0})
             </span>
           </div>
 
-          {/* Price */}
-          <div className="flex items-baseline space-x-2">
-            <span className="text-2xl font-bold text-primary-700">
+          <div className="flex items-baseline gap-2">
+            <span className="text-xl font-bold text-gray-900">
               ₹{displayPrice}
             </span>
             {discount > 0 && (
-              <span className="text-sm text-gray-500 line-through">
+              <span className="text-sm text-gray-400 line-through">
                 ₹{originalPrice}
               </span>
             )}
           </div>
 
-          {/* Variants Info */}
-          {product.variants && product.variants.length > 0 && (
-            <p className="text-xs text-gray-600 mt-2">
+          {product.variants?.length > 0 && (
+            <p className="text-xs text-gray-500 mt-2">
               {product.variants.length} size options available
             </p>
           )}
 
-          {/* Stock Status */}
           {product.stock === 0 && !product.variants && (
-            <p className="text-red-600 text-sm font-semibold mt-2">
+            <p className="text-red-500 text-sm font-semibold mt-2">
               Out of Stock
             </p>
           )}

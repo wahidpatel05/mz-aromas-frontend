@@ -1,4 +1,3 @@
-// src/components/Product/ProductReviews.jsx
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { FiStar } from "react-icons/fi";
@@ -35,15 +34,15 @@ const ProductReviews = ({ product, onReviewAdded }) => {
   };
 
   return (
-    <div className="mt-12 bg-white rounded-xl p-8">
+    <div className="mt-12 bg-white border border-gray-100 rounded-2xl shadow-sm p-8">
       <div className="flex items-center justify-between mb-8">
-        <h2 className="text-2xl font-display font-bold text-gray-900">
+        <h2 className="text-2xl font-display font-semibold text-gray-900">
           Customer Reviews
         </h2>
         {isAuthenticated && (
           <button
             onClick={() => setShowReviewForm(!showReviewForm)}
-            className="btn-primary"
+            className="bg-pink-500 text-white px-5 py-2 rounded-xl font-medium hover:bg-pink-600 transition-colors"
           >
             {showReviewForm ? "Cancel" : "Write a Review"}
           </button>
@@ -54,7 +53,7 @@ const ProductReviews = ({ product, onReviewAdded }) => {
       {showReviewForm && (
         <form
           onSubmit={handleSubmitReview}
-          className="bg-gray-50 rounded-xl p-6 mb-8"
+          className="bg-pink-50 border border-pink-100 rounded-xl p-6 mb-8 shadow-inner"
         >
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -72,7 +71,7 @@ const ProductReviews = ({ product, onReviewAdded }) => {
                     size={32}
                     className={
                       star <= rating
-                        ? "text-yellow-500 fill-yellow-500"
+                        ? "text-yellow-400 fill-yellow-400"
                         : "text-gray-300"
                     }
                   />
@@ -89,13 +88,17 @@ const ProductReviews = ({ product, onReviewAdded }) => {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               rows="4"
-              className="input-field"
+              className="w-full rounded-xl border border-gray-200 focus:border-pink-400 focus:ring focus:ring-pink-100 transition p-3 text-sm"
               placeholder="Share your experience with this product..."
               required
             />
           </div>
 
-          <button type="submit" disabled={loading} className="btn-primary">
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-pink-500 text-white px-5 py-2 rounded-xl font-medium hover:bg-pink-600 transition-colors disabled:opacity-70"
+          >
             {loading ? "Submitting..." : "Submit Review"}
           </button>
         </form>
@@ -103,12 +106,9 @@ const ProductReviews = ({ product, onReviewAdded }) => {
 
       {/* Reviews List */}
       {product.reviews && product.reviews.length > 0 ? (
-        <div className="space-y-6">
+        <div className="divide-y divide-gray-100">
           {product.reviews.map((review) => (
-            <div
-              key={review._id}
-              className="border-b border-gray-200 pb-6 last:border-0"
-            >
+            <div key={review._id} className="py-6">
               <div className="flex items-center justify-between mb-3">
                 <div>
                   <div className="font-semibold text-gray-900">
@@ -121,23 +121,23 @@ const ProductReviews = ({ product, onReviewAdded }) => {
                         size={16}
                         className={
                           i < review.rating
-                            ? "text-yellow-500 fill-yellow-500"
+                            ? "text-yellow-400 fill-yellow-400"
                             : "text-gray-300"
                         }
                       />
                     ))}
                   </div>
                 </div>
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-gray-500">
                   {new Date(review.createdAt).toLocaleDateString()}
                 </div>
               </div>
-              <p className="text-gray-700">{review.comment}</p>
+              <p className="text-gray-700 leading-relaxed">{review.comment}</p>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-gray-600 text-center py-8">
+        <p className="text-gray-500 text-center py-8 bg-gray-50 rounded-xl border border-gray-100">
           No reviews yet. Be the first to review this product!
         </p>
       )}
