@@ -1,8 +1,7 @@
-// src/pages/Products/ProductsPage.jsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { FiFilter, FiX, FiChevronDown } from "react-icons/fi";
+import { FiFilter } from "react-icons/fi";
 import ProductCard from "../../components/Product/ProductCard";
 import { fetchProducts } from "../../store/slices/productSlice";
 import { fetchCategories } from "../../store/slices/categorySlice";
@@ -48,30 +47,19 @@ const ProductsPage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const params = {
-      page: currentPage,
-      ...filters,
-    };
-
-    // Remove empty filters
+    const params = { page: currentPage, ...filters };
     Object.keys(params).forEach((key) => {
       if (!params[key]) delete params[key];
     });
-
     dispatch(fetchProducts(params));
   }, [dispatch, currentPage, filters]);
 
   const handleFilterChange = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
     setCurrentPage(1);
-
-    // Update URL
     const newParams = new URLSearchParams(searchParams);
-    if (value) {
-      newParams.set(key, value);
-    } else {
-      newParams.delete(key);
-    }
+    if (value) newParams.set(key, value);
+    else newParams.delete(key);
     setSearchParams(newParams);
   };
 
@@ -88,48 +76,46 @@ const ProductsPage = () => {
     setSearchParams({});
   };
 
-  const hasActiveFilters = Object.values(filters).some((value) => value !== "");
-
+  const hasActiveFilters = Object.values(filters).some((v) => v !== "");
   const totalPages = Math.ceil(filteredProductsCount / resultPerPage);
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      {/* Page Header */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">
-                {filters.category
-                  ? categories.find((cat) => cat.slug === filters.category)
-                      ?.name
-                  : "All Products"}
-              </h1>
-              <p className="text-gray-600">
-                {filteredProductsCount} products found
-              </p>
-            </div>
-
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className="lg:hidden btn-secondary py-2 px-4"
-            >
-              <FiFilter className="inline mr-2" />
-              Filters
-            </button>
+    <div className="bg-gradient-to-br from-amber-50 via-white to-amber-100 min-h-screen">
+      {/* Header */}
+      <div className="bg-white/90 border-b border-amber-100 shadow-sm">
+        <div className="container mx-auto px-4 py-6 flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-display font-bold text-amber-900 mb-1">
+              {filters.category
+                ? categories.find((c) => c.slug === filters.category)?.name
+                : "All Products"}
+            </h1>
+            <p className="text-gray-700 text-sm">
+              {filteredProductsCount} products found
+            </p>
           </div>
+
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="lg:hidden bg-gradient-to-r from-amber-400 to-yellow-600 hover:from-amber-500 hover:to-yellow-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center shadow-md"
+          >
+            <FiFilter className="mr-2" /> Filters
+          </button>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-10">
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar */}
           <aside
-            className={`lg:w-64 ${showFilters ? "block" : "hidden lg:block"}`}
+            className={`lg:w-72 ${showFilters ? "block" : "hidden lg:block"}`}
           >
-            <div className="bg-white rounded-xl p-6 shadow-sm sticky top-24">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-gray-900">Filters</h2>
+            <div className="bg-white/90 border border-amber-100 rounded-2xl p-6 shadow-md hover:shadow-lg transition-all sticky top-24">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-semibold text-amber-900">
+                  Filters
+                </h2>
                 {hasActiveFilters && (
                   <button
                     onClick={clearFilters}
@@ -140,36 +126,32 @@ const ProductsPage = () => {
                 )}
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-8">
                 {/* Categories */}
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">
-                    Categories
-                  </h3>
+                  <h3 className="font-semibold text-gray-900 mb-3">Category</h3>
                   <div className="space-y-2">
-                    {categories.map((category) => (
+                    {categories.map((c) => (
                       <label
-                        key={category._id}
+                        key={c._id}
                         className="flex items-center cursor-pointer"
                       >
                         <input
                           type="radio"
                           name="category"
-                          checked={filters.category === category.slug}
+                          checked={filters.category === c.slug}
                           onChange={() =>
-                            handleFilterChange("category", category.slug)
+                            handleFilterChange("category", c.slug)
                           }
-                          className="w-4 h-4 text-primary-600"
+                          className="text-amber-600 focus:ring-amber-500"
                         />
-                        <span className="ml-2 text-gray-700">
-                          {category.name}
-                        </span>
+                        <span className="ml-2 text-gray-700">{c.name}</span>
                       </label>
                     ))}
                     {filters.category && (
                       <button
                         onClick={() => handleFilterChange("category", "")}
-                        className="text-sm text-primary-600 hover:text-primary-700"
+                        className="text-sm text-amber-600 hover:text-amber-700"
                       >
                         View All
                       </button>
@@ -185,52 +167,50 @@ const ProductsPage = () => {
                   <div className="space-y-3">
                     <input
                       type="number"
-                      placeholder="Min Price"
+                      placeholder="Min"
                       value={filters.minPrice}
                       onChange={(e) =>
                         handleFilterChange("minPrice", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-400"
                     />
                     <input
                       type="number"
-                      placeholder="Max Price"
+                      placeholder="Max"
                       value={filters.maxPrice}
                       onChange={(e) =>
                         handleFilterChange("maxPrice", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-400"
                     />
                   </div>
                 </div>
 
-                {/* Fragrance Type */}
+                {/* Fragrance */}
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-3">
                     Fragrance Type
                   </h3>
                   <div className="space-y-2">
-                    {fragranceTypes.map((fragrance) => (
+                    {fragranceTypes.map((f) => (
                       <label
-                        key={fragrance}
+                        key={f}
                         className="flex items-center cursor-pointer"
                       >
                         <input
                           type="radio"
                           name="fragrance"
-                          checked={filters.fragrance === fragrance}
-                          onChange={() =>
-                            handleFilterChange("fragrance", fragrance)
-                          }
-                          className="w-4 h-4 text-primary-600"
+                          checked={filters.fragrance === f}
+                          onChange={() => handleFilterChange("fragrance", f)}
+                          className="text-amber-600 focus:ring-amber-500"
                         />
-                        <span className="ml-2 text-gray-700">{fragrance}</span>
+                        <span className="ml-2 text-gray-700">{f}</span>
                       </label>
                     ))}
                     {filters.fragrance && (
                       <button
                         onClick={() => handleFilterChange("fragrance", "")}
-                        className="text-sm text-primary-600 hover:text-primary-700"
+                        className="text-sm text-amber-600 hover:text-amber-700"
                       >
                         Clear
                       </button>
@@ -256,7 +236,7 @@ const ProductsPage = () => {
                           onChange={() =>
                             handleFilterChange("ratings", rating.toString())
                           }
-                          className="w-4 h-4 text-primary-600"
+                          className="text-amber-600 focus:ring-amber-500"
                         />
                         <span className="ml-2 text-gray-700 flex items-center">
                           {rating}
@@ -271,28 +251,32 @@ const ProductsPage = () => {
             </div>
           </aside>
 
-          {/* Products Grid */}
+          {/* Products */}
           <div className="flex-1">
             {loading ? (
               <div className="flex justify-center items-center h-64">
-                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-primary-600"></div>
+                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-amber-600"></div>
               </div>
             ) : products.length === 0 ? (
-              <div className="text-center py-16">
+              <div className="text-center py-20">
                 <div className="text-6xl mb-4">🔍</div>
-                <h3 className="text-2xl font-semibold text-gray-900 mb-2">
+                <h3 className="text-2xl font-bold text-amber-900 mb-2">
                   No Products Found
                 </h3>
                 <p className="text-gray-600 mb-6">
                   Try adjusting your filters or search criteria
                 </p>
-                <button onClick={clearFilters} className="btn-primary">
+                <button
+                  onClick={clearFilters}
+                  className="bg-gradient-to-r from-amber-400 to-yellow-600 hover:from-amber-500 hover:to-yellow-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all"
+                >
                   Clear Filters
                 </button>
               </div>
             ) : (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Product Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                   {products.map((product) => (
                     <ProductCard key={product._id} product={product} />
                   ))}
@@ -307,13 +291,13 @@ const ProductsPage = () => {
                           setCurrentPage((prev) => Math.max(1, prev - 1))
                         }
                         disabled={currentPage === 1}
-                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-amber-50 disabled:opacity-50"
                       >
                         Previous
                       </button>
 
-                      {[...Array(totalPages)].map((_, index) => {
-                        const page = index + 1;
+                      {[...Array(totalPages)].map((_, i) => {
+                        const page = i + 1;
                         if (
                           page === 1 ||
                           page === totalPages ||
@@ -323,10 +307,10 @@ const ProductsPage = () => {
                             <button
                               key={page}
                               onClick={() => setCurrentPage(page)}
-                              className={`px-4 py-2 rounded-lg ${
+                              className={`px-4 py-2 rounded-lg font-medium ${
                                 currentPage === page
-                                  ? "bg-primary-600 text-white"
-                                  : "border border-gray-300 hover:bg-gray-50"
+                                  ? "bg-gradient-to-r from-amber-400 to-yellow-600 text-white"
+                                  : "border border-gray-300 hover:bg-amber-50"
                               }`}
                             >
                               {page}
@@ -348,7 +332,7 @@ const ProductsPage = () => {
                           )
                         }
                         disabled={currentPage === totalPages}
-                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-amber-50 disabled:opacity-50"
                       >
                         Next
                       </button>

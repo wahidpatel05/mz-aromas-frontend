@@ -1,4 +1,3 @@
-// src/pages/Product/ProductDetailPage.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,10 +61,8 @@ const ProductDetailPage = () => {
 
   if (loading || !product) {
     return (
-      <div className="container mx-auto px-4 py-16">
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-primary-600"></div>
-        </div>
+      <div className="flex justify-center items-center h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-amber-600"></div>
       </div>
     );
   }
@@ -135,22 +132,22 @@ const ProductDetailPage = () => {
   };
 
   return (
-    <div className="bg-gray-50">
+    <div className="bg-gradient-to-br from-amber-50 via-white to-amber-100">
       {/* Breadcrumb */}
-      <div className="bg-white border-b">
+      <div className="bg-white/80 border-b border-amber-100 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center space-x-2 text-sm text-gray-600">
-            <Link to="/" className="hover:text-primary-600">
+            <Link to="/" className="hover:text-amber-700 font-medium">
               Home
             </Link>
             <span>/</span>
-            <Link to="/products" className="hover:text-primary-600">
+            <Link to="/products" className="hover:text-amber-700 font-medium">
               Products
             </Link>
             <span>/</span>
             <Link
               to={`/products?category=${product.category?.slug}`}
-              className="hover:text-primary-600"
+              className="hover:text-amber-700 font-medium"
             >
               {product.category?.name}
             </Link>
@@ -161,24 +158,24 @@ const ProductDetailPage = () => {
       </div>
 
       {/* Product Section */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Image Gallery */}
           <div>
-            <div className="bg-white rounded-xl p-4 mb-4">
+            <div className="bg-white/90 border border-amber-100 rounded-2xl p-4 shadow-sm hover:shadow-lg transition-all duration-500">
               <Swiper
                 spaceBetween={10}
                 navigation={true}
                 thumbs={{ swiper: thumbsSwiper }}
                 modules={[FreeMode, Navigation, Thumbs]}
-                className="mb-4 rounded-lg overflow-hidden"
+                className="mb-4 rounded-xl overflow-hidden"
               >
                 {product.images.map((image, index) => (
                   <SwiperSlide key={index}>
                     <img
                       src={image.url}
                       alt={`${product.name} ${index + 1}`}
-                      className="w-full h-[500px] object-cover"
+                      className="w-full h-[500px] object-cover rounded-xl"
                     />
                   </SwiperSlide>
                 ))}
@@ -198,21 +195,21 @@ const ProductDetailPage = () => {
                     <img
                       src={image.url}
                       alt={`Thumbnail ${index + 1}`}
-                      className="w-full h-24 object-cover rounded-lg border-2 border-transparent hover:border-primary-600"
+                      className="w-full h-24 object-cover rounded-xl border-2 border-transparent hover:border-amber-500 transition-all"
                     />
                   </SwiperSlide>
                 ))}
               </Swiper>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex gap-4">
+            {/* Wishlist & Share */}
+            <div className="flex gap-4 mt-4">
               <button
                 onClick={handleWishlist}
-                className={`flex-1 py-3 rounded-lg font-semibold border-2 transition-colors ${
+                className={`flex-1 py-3 rounded-xl font-semibold border-2 transition-all ${
                   isInWishlist
                     ? "bg-red-50 border-red-500 text-red-600"
-                    : "bg-white border-gray-300 text-gray-700 hover:border-primary-600"
+                    : "bg-white border-gray-300 hover:border-amber-600 text-gray-700"
                 }`}
               >
                 <FiHeart
@@ -221,9 +218,10 @@ const ProductDetailPage = () => {
                 />
                 {isInWishlist ? "In Wishlist" : "Add to Wishlist"}
               </button>
+
               <button
                 onClick={handleShare}
-                className="px-6 py-3 rounded-lg font-semibold border-2 border-gray-300 text-gray-700 hover:border-primary-600 transition-colors"
+                className="px-6 py-3 rounded-xl font-semibold border-2 border-gray-300 text-gray-700 hover:border-amber-600 transition-all"
               >
                 <FiShare2 className="inline" />
               </button>
@@ -232,23 +230,23 @@ const ProductDetailPage = () => {
 
           {/* Product Info */}
           <div>
-            <div className="bg-white rounded-xl p-8">
+            <div className="bg-white/90 border border-amber-100 rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-500">
               {/* Category */}
               <Link
                 to={`/products?category=${product.category?.slug}`}
-                className="inline-block text-sm text-primary-600 hover:text-primary-700 font-semibold uppercase tracking-wide mb-2"
+                className="inline-block text-sm text-amber-700 font-semibold uppercase tracking-widest mb-2"
               >
                 {product.category?.name}
               </Link>
 
-              {/* Product Name */}
-              <h1 className="text-3xl font-display font-bold text-gray-900 mb-4">
+              {/* Name */}
+              <h1 className="text-4xl font-display font-bold text-amber-900 mb-4">
                 {product.name}
               </h1>
 
               {/* Rating */}
               <div className="flex items-center space-x-4 mb-6">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center">
                   {[...Array(5)].map((_, i) => (
                     <FiStar
                       key={i}
@@ -268,31 +266,35 @@ const ProductDetailPage = () => {
 
               {/* Price */}
               <div className="mb-6">
-                <div className="flex items-baseline space-x-3 mb-2">
-                  <span className="text-4xl font-bold text-primary-700">
+                <div className="flex items-baseline space-x-3 mb-1">
+                  <span className="text-4xl font-bold text-amber-800">
                     ₹{displayPrice}
                   </span>
                   {discount > 0 && (
                     <>
-                      <span className="text-xl text-gray-500 line-through">
+                      <span className="text-lg text-gray-500 line-through">
                         ₹{originalPrice}
                       </span>
-                      <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                      <span className="bg-amber-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                         {discount}% OFF
                       </span>
                     </>
                   )}
                 </div>
-                <p className="text-sm text-gray-600">Inclusive of all taxes</p>
+                <p className="text-sm text-gray-600">
+                  Inclusive of all taxes
+                </p>
               </div>
 
-              {/* Short Description */}
+              {/* Description */}
               {product.shortDescription && (
-                <p className="text-gray-700 mb-6">{product.shortDescription}</p>
+                <p className="text-gray-700 mb-6 leading-relaxed">
+                  {product.shortDescription}
+                </p>
               )}
 
               {/* Variants */}
-              {product.variants && product.variants.length > 0 && (
+              {product.variants?.length > 0 && (
                 <div className="mb-6">
                   <h3 className="font-semibold text-gray-900 mb-3">
                     Select Size:
@@ -305,10 +307,10 @@ const ProductDetailPage = () => {
                         disabled={variant.stock === 0}
                         className={`p-3 rounded-lg border-2 font-semibold transition-all ${
                           selectedVariant?._id === variant._id
-                            ? "border-primary-600 bg-primary-50 text-primary-700"
+                            ? "border-amber-600 bg-amber-50 text-amber-800"
                             : variant.stock === 0
                             ? "border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed"
-                            : "border-gray-300 hover:border-primary-600"
+                            : "border-gray-300 hover:border-amber-600"
                         }`}
                       >
                         <div className="text-sm">{variant.size}</div>
@@ -326,26 +328,14 @@ const ProductDetailPage = () => {
                 </div>
               )}
 
-              {/* Fragrance Type */}
-              {product.fragrance && (
-                <div className="mb-6">
-                  <h3 className="font-semibold text-gray-900 mb-2">
-                    Fragrance Type:
-                  </h3>
-                  <span className="inline-block bg-primary-100 text-primary-700 px-4 py-2 rounded-full font-medium">
-                    {product.fragrance}
-                  </span>
-                </div>
-              )}
-
-              {/* Quantity Selector */}
+              {/* Quantity */}
               <div className="mb-6">
                 <h3 className="font-semibold text-gray-900 mb-3">Quantity:</h3>
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center border-2 border-gray-300 rounded-lg">
                     <button
                       onClick={() => handleQuantityChange("decrement")}
-                      className="px-4 py-2 hover:bg-gray-100 transition-colors"
+                      className="px-4 py-2 hover:bg-amber-50"
                       disabled={quantity <= 1}
                     >
                       <FiMinus />
@@ -353,7 +343,7 @@ const ProductDetailPage = () => {
                     <span className="px-6 py-2 font-semibold">{quantity}</span>
                     <button
                       onClick={() => handleQuantityChange("increment")}
-                      className="px-4 py-2 hover:bg-gray-100 transition-colors"
+                      className="px-4 py-2 hover:bg-amber-50"
                     >
                       <FiPlus />
                     </button>
@@ -366,30 +356,38 @@ const ProductDetailPage = () => {
                 </div>
               </div>
 
-              {/* Add to Cart Button */}
+              {/* Add to Cart */}
               <button
                 onClick={handleAddToCart}
                 disabled={selectedVariant?.stock === 0}
-                className="w-full btn-primary py-4 text-lg flex items-center justify-center space-x-2"
+                className="w-full bg-gradient-to-r from-amber-400 to-yellow-600 hover:from-amber-500 hover:to-yellow-700 text-white py-4 rounded-xl font-semibold text-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center space-x-2"
               >
                 <FiShoppingCart size={24} />
                 <span>Add to Cart</span>
               </button>
 
-              {/* Features */}
+              {/* Highlights */}
               <div className="grid grid-cols-2 gap-4 mt-6">
-                <div className="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg">
-                  <FiTruck className="text-primary-600" size={24} />
+                <div className="flex items-center space-x-3 bg-amber-50 p-4 rounded-lg">
+                  <FiTruck className="text-amber-700" size={24} />
                   <div className="text-sm">
-                    <div className="font-semibold">Free Delivery</div>
-                    <div className="text-gray-600">On orders above ₹999</div>
+                    <div className="font-semibold text-amber-800">
+                      Free Delivery
+                    </div>
+                    <div className="text-gray-600 text-xs">
+                      On orders above ₹999
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center space-x-3 bg-gray-50 p-4 rounded-lg">
-                  <FiShield className="text-primary-600" size={24} />
+                <div className="flex items-center space-x-3 bg-amber-50 p-4 rounded-lg">
+                  <FiShield className="text-amber-700" size={24} />
                   <div className="text-sm">
-                    <div className="font-semibold">Secure Payment</div>
-                    <div className="text-gray-600">100% Protected</div>
+                    <div className="font-semibold text-amber-800">
+                      Secure Payment
+                    </div>
+                    <div className="text-gray-600 text-xs">
+                      100% Protected
+                    </div>
                   </div>
                 </div>
               </div>
@@ -397,115 +395,70 @@ const ProductDetailPage = () => {
           </div>
         </div>
 
-        {/* Product Details Tabs */}
-        <div className="mt-12 bg-white rounded-xl p-8">
-          <div className="border-b border-gray-200">
+        {/* Tabs */}
+        <div className="mt-16 bg-white/90 border border-amber-100 rounded-2xl p-8 shadow-sm">
+          <div className="border-b border-gray-200 mb-6">
             <div className="flex space-x-8">
-              <button
-                onClick={() => setActiveTab("description")}
-                className={`pb-4 font-semibold transition-colors ${
-                  activeTab === "description"
-                    ? "border-b-2 border-primary-600 text-primary-600"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                Description
-              </button>
-              <button
-                onClick={() => setActiveTab("ingredients")}
-                className={`pb-4 font-semibold transition-colors ${
-                  activeTab === "ingredients"
-                    ? "border-b-2 border-primary-600 text-primary-600"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                Ingredients
-              </button>
-              <button
-                onClick={() => setActiveTab("howToUse")}
-                className={`pb-4 font-semibold transition-colors ${
-                  activeTab === "howToUse"
-                    ? "border-b-2 border-primary-600 text-primary-600"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                How to Use
-              </button>
-              <button
-                onClick={() => setActiveTab("reviews")}
-                className={`pb-4 font-semibold transition-colors ${
-                  activeTab === "reviews"
-                    ? "border-b-2 border-primary-600 text-primary-600"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                Reviews ({product.numOfReviews})
-              </button>
+              {["description", "ingredients", "howToUse", "reviews"].map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`pb-4 font-semibold transition-all capitalize ${
+                    activeTab === tab
+                      ? "border-b-2 border-amber-600 text-amber-700"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  {tab === "reviews"
+                    ? `Reviews (${product.numOfReviews})`
+                    : tab}
+                </button>
+              ))}
             </div>
           </div>
 
-          <div className="py-6">
+          <div className="text-gray-700 leading-relaxed">
             {activeTab === "description" && (
-              <div className="prose max-w-none">
-                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                  {product.description}
-                </p>
-              </div>
+              <p>{product.description || "No description available."}</p>
             )}
 
             {activeTab === "ingredients" && (
-              <div>
-                {product.ingredients && product.ingredients.length > 0 ? (
-                  <ul className="list-disc list-inside space-y-2">
-                    {product.ingredients.map((ingredient, index) => (
-                      <li key={index} className="text-gray-700">
-                        {ingredient}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-gray-600">
-                    Ingredient information not available.
-                  </p>
-                )}
-              </div>
+              product.ingredients?.length ? (
+                <ul className="list-disc list-inside space-y-2">
+                  {product.ingredients.map((i, idx) => (
+                    <li key={idx}>{i}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Ingredient information not available.</p>
+              )
             )}
 
             {activeTab === "howToUse" && (
-              <div>
-                {product.howToUse ? (
-                  <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                    {product.howToUse}
-                  </p>
-                ) : (
-                  <p className="text-gray-600">
-                    Usage instructions not available.
-                  </p>
-                )}
-              </div>
+              <p>{product.howToUse || "Usage instructions not available."}</p>
             )}
 
             {activeTab === "reviews" && (
               <div>
-                {product.reviews && product.reviews.length > 0 ? (
+                {product.reviews?.length ? (
                   <div className="space-y-6">
-                    {product.reviews.map((review) => (
+                    {product.reviews.map((r) => (
                       <div
-                        key={review._id}
+                        key={r._id}
                         className="border-b border-gray-200 pb-6 last:border-0"
                       >
-                        <div className="flex items-center justify-between mb-3">
+                        <div className="flex justify-between mb-2">
                           <div>
                             <div className="font-semibold text-gray-900">
-                              {review.name}
+                              {r.name}
                             </div>
-                            <div className="flex items-center space-x-1 mt-1">
+                            <div className="flex items-center space-x-1">
                               {[...Array(5)].map((_, i) => (
                                 <FiStar
                                   key={i}
                                   size={16}
                                   className={
-                                    i < review.rating
+                                    i < r.rating
                                       ? "text-yellow-500 fill-yellow-500"
                                       : "text-gray-300"
                                   }
@@ -513,18 +466,16 @@ const ProductDetailPage = () => {
                               ))}
                             </div>
                           </div>
-                          <div className="text-sm text-gray-600">
-                            {new Date(review.createdAt).toLocaleDateString()}
+                          <div className="text-xs text-gray-600">
+                            {new Date(r.createdAt).toLocaleDateString()}
                           </div>
                         </div>
-                        <p className="text-gray-700">{review.comment}</p>
+                        <p>{r.comment}</p>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-gray-600">
-                    No reviews yet. Be the first to review this product!
-                  </p>
+                  <p>No reviews yet. Be the first to review!</p>
                 )}
               </div>
             )}
@@ -533,16 +484,13 @@ const ProductDetailPage = () => {
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (
-          <div className="mt-16">
-            <h2 className="text-3xl font-display font-bold text-gray-900 mb-8">
+          <div className="mt-20">
+            <h2 className="text-3xl font-display font-bold text-amber-900 mb-8">
               You May Also Like
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {relatedProducts.map((relatedProduct) => (
-                <ProductCard
-                  key={relatedProduct._id}
-                  product={relatedProduct}
-                />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {relatedProducts.map((p) => (
+                <ProductCard key={p._id} product={p} />
               ))}
             </div>
           </div>

@@ -1,4 +1,3 @@
-// src/pages/Profile/UpdatePasswordPage.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiLock, FiEye, FiEyeOff, FiArrowLeft } from "react-icons/fi";
@@ -55,26 +54,37 @@ const UpdatePasswordPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100 py-12">
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto">
+          {/* Back Button */}
           <button
             onClick={() => navigate("/profile")}
-            className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 mb-6"
+            className="flex items-center space-x-2 text-gray-700 hover:text-amber-700 mb-8 transition"
           >
             <FiArrowLeft />
             <span>Back to Profile</span>
           </button>
 
-          <div className="bg-white rounded-xl shadow-sm p-8">
-            <h1 className="text-3xl font-display font-bold text-gray-900 mb-8">
-              Change Password
-            </h1>
+          {/* Card */}
+          <div className="bg-white/95 border border-amber-100 rounded-2xl shadow-md hover:shadow-lg transition-all p-8">
+            <div className="text-center mb-10">
+              <div className="w-16 h-16 mx-auto rounded-full bg-amber-100 flex items-center justify-center mb-4">
+                <FiLock className="text-amber-700" size={28} />
+              </div>
+              <h1 className="text-3xl font-display font-bold text-amber-900">
+                Change Password
+              </h1>
+              <p className="text-gray-600 text-sm mt-1">
+                Keep your account secure by updating your password regularly
+              </p>
+            </div>
 
+            {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Old Password */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-800 mb-2">
                   Current Password
                 </label>
                 <div className="relative">
@@ -86,7 +96,7 @@ const UpdatePasswordPage = () => {
                     name="oldPassword"
                     value={formData.oldPassword}
                     onChange={handleChange}
-                    className="input-field pl-10 pr-10"
+                    className="w-full px-4 py-3 pl-10 pr-10 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-amber-400 focus:border-amber-400 outline-none transition"
                     required
                   />
                   <button
@@ -110,7 +120,7 @@ const UpdatePasswordPage = () => {
 
               {/* New Password */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-800 mb-2">
                   New Password
                 </label>
                 <div className="relative">
@@ -122,7 +132,7 @@ const UpdatePasswordPage = () => {
                     name="newPassword"
                     value={formData.newPassword}
                     onChange={handleChange}
-                    className="input-field pl-10 pr-10"
+                    className="w-full px-4 py-3 pl-10 pr-10 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-amber-400 focus:border-amber-400 outline-none transition"
                     minLength="8"
                     required
                   />
@@ -147,7 +157,7 @@ const UpdatePasswordPage = () => {
 
               {/* Confirm Password */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-800 mb-2">
                   Confirm New Password
                 </label>
                 <div className="relative">
@@ -159,7 +169,7 @@ const UpdatePasswordPage = () => {
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="input-field pl-10 pr-10"
+                    className="w-full px-4 py-3 pl-10 pr-10 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-amber-400 focus:border-amber-400 outline-none transition"
                     required
                   />
                   <button
@@ -181,31 +191,32 @@ const UpdatePasswordPage = () => {
                 </div>
               </div>
 
-              {/* Password Requirements */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <p className="text-sm text-blue-800 font-medium mb-2">
+              {/* Password Tips */}
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <p className="text-sm font-medium text-amber-800 mb-2">
                   Password Requirements:
                 </p>
-                <ul className="text-sm text-blue-700 space-y-1 list-disc list-inside">
+                <ul className="text-sm text-amber-700 list-disc list-inside space-y-1">
                   <li>At least 8 characters long</li>
                   <li>Include uppercase and lowercase letters</li>
                   <li>Include at least one number</li>
                 </ul>
               </div>
 
-              {/* Submit Button */}
-              <div className="flex space-x-4">
+              {/* Buttons */}
+              <div className="flex flex-wrap gap-4 pt-2">
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex-1 btn-primary py-3"
+                  className="flex-1 bg-gradient-to-r from-amber-400 to-yellow-600 hover:from-amber-500 hover:to-yellow-700 text-white py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all"
                 >
                   {loading ? "Updating..." : "Update Password"}
                 </button>
+
                 <button
                   type="button"
                   onClick={() => navigate("/profile")}
-                  className="flex-1 btn-secondary py-3"
+                  className="flex-1 border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 py-3 rounded-lg font-semibold transition-all"
                 >
                   Cancel
                 </button>

@@ -1,4 +1,3 @@
-// src/pages/Checkout/CheckoutPage.jsx
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -64,7 +63,6 @@ const CheckoutPage = () => {
     }
 
     try {
-      // Create Razorpay Order
       const { data } = await API.post("/payment/razorpay/order", {
         amount: total,
       });
@@ -78,7 +76,6 @@ const CheckoutPage = () => {
         order_id: data.order.id,
         handler: async function (response) {
           try {
-            // Verify Payment
             const verifyResponse = await API.post("/payment/razorpay/verify", {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
@@ -86,7 +83,6 @@ const CheckoutPage = () => {
             });
 
             if (verifyResponse.data.success) {
-              // Create Order
               const finalOrderData = {
                 ...orderData,
                 paymentInfo: {
@@ -97,7 +93,6 @@ const CheckoutPage = () => {
               };
 
               const orderResult = await dispatch(createOrder(finalOrderData));
-
               if (orderResult.payload) {
                 dispatch(clearCart());
                 navigate("/order-success", {
@@ -105,7 +100,7 @@ const CheckoutPage = () => {
                 });
               }
             }
-          } catch (error) {
+          } catch {
             toast.error("Payment verification failed");
           }
         },
@@ -115,13 +110,13 @@ const CheckoutPage = () => {
           contact: shippingInfo.phoneNo,
         },
         theme: {
-          color: "#8f5c35",
+          color: "#b9814f",
         },
       };
 
       const paymentObject = new window.Razorpay(options);
       paymentObject.open();
-    } catch (error) {
+    } catch {
       toast.error("Payment failed");
     }
   };
@@ -129,7 +124,6 @@ const CheckoutPage = () => {
   const handleCODPayment = async (orderData) => {
     try {
       const { data } = await API.post("/payment/cod");
-
       const finalOrderData = {
         ...orderData,
         paymentInfo: {
@@ -138,24 +132,20 @@ const CheckoutPage = () => {
           type: "COD",
         },
       };
-
       const orderResult = await dispatch(createOrder(finalOrderData));
-
       if (orderResult.payload) {
         dispatch(clearCart());
         navigate("/order-success", {
           state: { orderId: orderResult.payload.order._id },
         });
       }
-    } catch (error) {
+    } catch {
       toast.error("Order placement failed");
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validation
     if (
       !shippingInfo.address ||
       !shippingInfo.city ||
@@ -165,18 +155,15 @@ const CheckoutPage = () => {
       toast.error("Please fill all shipping details");
       return;
     }
-
     if (shippingInfo.phoneNo.length !== 10) {
       toast.error("Please enter a valid 10-digit phone number");
       return;
     }
 
-    // Prepare Order Data
     const orderItems = cartItems.map((item) => {
       const price = item.variant
         ? item.variant.discountPrice || item.variant.price
         : item.product.discountPrice || item.product.price;
-
       return {
         name: item.product.name,
         price: price,
@@ -184,10 +171,7 @@ const CheckoutPage = () => {
         image: item.product.images[0]?.url,
         product: item.product._id,
         variant: item.variant
-          ? {
-              size: item.variant.size,
-              price: item.variant.price,
-            }
+          ? { size: item.variant.size, price: item.variant.price }
           : undefined,
       };
     });
@@ -201,12 +185,8 @@ const CheckoutPage = () => {
       totalPrice: total,
     };
 
-    // Process Payment
-    if (paymentMethod === "razorpay") {
-      await handleRazorpayPayment(orderData);
-    } else {
-      await handleCODPayment(orderData);
-    }
+    if (paymentMethod === "razorpay") await handleRazorpayPayment(orderData);
+    else await handleCODPayment(orderData);
   };
 
   if (cartItems.length === 0) {
@@ -215,23 +195,23 @@ const CheckoutPage = () => {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen py-8">
+    <div className="bg-gradient-to-br from-amber-50 via-white to-amber-100 min-h-screen py-10">
       <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-display font-bold text-gray-900 mb-8">
+        <h1 className="text-4xl font-display font-bold text-amber-800 mb-10 text-center">
           Checkout
         </h1>
 
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Shipping & Payment Info */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Shipping Address */}
-              <div className="bg-white rounded-xl p-6 shadow-sm">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            {/* 🏠 Shipping & Payment Info */}
+            <div className="lg:col-span-2 space-y-8">
+              {/* Shipping */}
+              <div className="bg-white/90 border border-amber-100 rounded-2xl p-8 shadow-sm hover:shadow-lg hover:border-amber-200 transition-all duration-500">
+                <h2 className="text-2xl font-semibold text-amber-800 mb-6">
                   Shipping Address
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Full Address *
@@ -241,75 +221,35 @@ const CheckoutPage = () => {
                       value={shippingInfo.address}
                       onChange={handleInputChange}
                       rows="3"
-                      className="input-field"
                       placeholder="House No., Street, Area"
                       required
+                      className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-amber-200 focus:border-amber-400 transition-all"
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      City *
-                    </label>
-                    <input
-                      type="text"
-                      name="city"
-                      value={shippingInfo.city}
-                      onChange={handleInputChange}
-                      className="input-field"
-                      placeholder="City"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      State *
-                    </label>
-                    <input
-                      type="text"
-                      name="state"
-                      value={shippingInfo.state}
-                      onChange={handleInputChange}
-                      className="input-field"
-                      placeholder="State"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      PIN Code *
-                    </label>
-                    <input
-                      type="text"
-                      name="pinCode"
-                      value={shippingInfo.pinCode}
-                      onChange={handleInputChange}
-                      className="input-field"
-                      placeholder="PIN Code"
-                      maxLength="6"
-                      pattern="[0-9]{6}"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Phone Number *
-                    </label>
-                    <input
-                      type="tel"
-                      name="phoneNo"
-                      value={shippingInfo.phoneNo}
-                      onChange={handleInputChange}
-                      className="input-field"
-                      placeholder="10-digit mobile number"
-                      maxLength="10"
-                      pattern="[0-9]{10}"
-                      required
-                    />
-                  </div>
+                  {["city", "state", "pinCode", "phoneNo"].map((field) => (
+                    <div key={field}>
+                      <label className="block text-sm font-medium text-gray-700 mb-2 capitalize">
+                        {field === "pinCode" ? "PIN Code *" : field === "phoneNo" ? "Phone Number *" : `${field} *`}
+                      </label>
+                      <input
+                        type={field === "phoneNo" || field === "pinCode" ? "tel" : "text"}
+                        name={field}
+                        value={shippingInfo[field]}
+                        onChange={handleInputChange}
+                        placeholder={
+                          field === "pinCode"
+                            ? "6-digit code"
+                            : field === "phoneNo"
+                            ? "10-digit number"
+                            : `Enter ${field}`
+                        }
+                        required
+                        maxLength={field === "pinCode" ? 6 : field === "phoneNo" ? 10 : undefined}
+                        className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-amber-200 focus:border-amber-400 transition-all"
+                      />
+                    </div>
+                  ))}
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -319,96 +259,88 @@ const CheckoutPage = () => {
                       type="text"
                       name="country"
                       value={shippingInfo.country}
-                      className="input-field bg-gray-100"
                       disabled
+                      className="w-full border border-gray-200 bg-gray-100 rounded-lg p-3 text-gray-600"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Payment Method */}
-              <div className="bg-white rounded-xl p-6 shadow-sm">
-                <h2 className="text-xl font-semibold text-gray-900 mb-6">
+              <div className="bg-white/90 border border-amber-100 rounded-2xl p-8 shadow-sm hover:shadow-lg hover:border-amber-200 transition-all duration-500">
+                <h2 className="text-2xl font-semibold text-amber-800 mb-6">
                   Payment Method
                 </h2>
 
                 <div className="space-y-4">
-                  {/* Razorpay */}
-                  <label className="flex items-center p-4 border-2 rounded-lg cursor-pointer hover:border-primary-600 transition-colors">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="razorpay"
-                      checked={paymentMethod === "razorpay"}
-                      onChange={(e) => setPaymentMethod(e.target.value)}
-                      className="w-5 h-5 text-primary-600"
-                    />
-                    <div className="ml-4 flex-1">
-                      <div className="flex items-center space-x-3">
-                        <FiCreditCard size={24} className="text-primary-600" />
+                  {[
+                    {
+                      value: "razorpay",
+                      icon: <FiCreditCard className="text-amber-700" size={22} />,
+                      title: "Credit/Debit Card, UPI, Net Banking",
+                      desc: "Pay securely via Razorpay",
+                    },
+                    {
+                      value: "cod",
+                      icon: <FiCheckCircle className="text-amber-700" size={22} />,
+                      title: "Cash on Delivery",
+                      desc: "Pay when you receive your order",
+                    },
+                  ].map((method) => (
+                    <label
+                      key={method.value}
+                      className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all duration-300 ${
+                        paymentMethod === method.value
+                          ? "border-amber-400 bg-amber-50"
+                          : "border-gray-200 hover:border-amber-200"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value={method.value}
+                        checked={paymentMethod === method.value}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                        className="w-5 h-5 text-amber-600 accent-amber-600"
+                      />
+                      <div className="ml-4 flex items-center gap-3">
+                        {method.icon}
                         <div>
                           <div className="font-semibold text-gray-900">
-                            Credit/Debit Card, UPI, Net Banking
+                            {method.title}
                           </div>
                           <div className="text-sm text-gray-600">
-                            Pay securely via Razorpay
+                            {method.desc}
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </label>
-
-                  {/* Cash on Delivery */}
-                  <label className="flex items-center p-4 border-2 rounded-lg cursor-pointer hover:border-primary-600 transition-colors">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="cod"
-                      checked={paymentMethod === "cod"}
-                      onChange={(e) => setPaymentMethod(e.target.value)}
-                      className="w-5 h-5 text-primary-600"
-                    />
-                    <div className="ml-4 flex-1">
-                      <div className="flex items-center space-x-3">
-                        <FiCheckCircle size={24} className="text-primary-600" />
-                        <div>
-                          <div className="font-semibold text-gray-900">
-                            Cash on Delivery
-                          </div>
-                          <div className="text-sm text-gray-600">
-                            Pay when you receive the order
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </label>
+                    </label>
+                  ))}
                 </div>
               </div>
             </div>
 
-            {/* Order Summary */}
+            {/* 🧾 Order Summary */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-xl p-6 shadow-sm sticky top-24">
+              <div className="bg-white/90 border border-amber-100 rounded-2xl p-8 shadow-sm hover:shadow-lg hover:border-amber-200 transition-all duration-500 sticky top-24">
                 <h3 className="text-xl font-semibold text-gray-900 mb-6">
                   Order Summary
                 </h3>
 
-                {/* Cart Items */}
                 <div className="space-y-4 mb-6 max-h-64 overflow-y-auto">
                   {cartItems.map((item) => {
                     const price = item.variant
                       ? item.variant.discountPrice || item.variant.price
                       : item.product.discountPrice || item.product.price;
-
                     return (
                       <div
                         key={`${item.product._id}-${item.variant?.size}`}
-                        className="flex space-x-3"
+                        className="flex gap-3 items-center"
                       >
                         <img
                           src={item.product.images[0]?.url}
                           alt={item.product.name}
-                          className="w-16 h-16 object-cover rounded-lg"
+                          className="w-16 h-16 object-cover rounded-lg border border-amber-50"
                         />
                         <div className="flex-1">
                           <h4 className="text-sm font-semibold text-gray-900 line-clamp-1">
@@ -423,7 +355,7 @@ const CheckoutPage = () => {
                             <span className="text-xs text-gray-600">
                               Qty: {item.quantity}
                             </span>
-                            <span className="text-sm font-semibold text-gray-900">
+                            <span className="text-sm font-semibold text-amber-700">
                               ₹{price * item.quantity}
                             </span>
                           </div>
@@ -433,12 +365,12 @@ const CheckoutPage = () => {
                   })}
                 </div>
 
-                <div className="space-y-3 mb-6 pt-4 border-t">
-                  <div className="flex justify-between text-gray-600">
+                <div className="space-y-3 mb-6 pt-4 border-t border-gray-200">
+                  <div className="flex justify-between text-gray-700">
                     <span>Subtotal</span>
                     <span className="font-semibold">₹{subtotal}</span>
                   </div>
-                  <div className="flex justify-between text-gray-600">
+                  <div className="flex justify-between text-gray-700">
                     <span>Shipping</span>
                     <span className="font-semibold">
                       {shipping === 0 ? (
@@ -448,16 +380,17 @@ const CheckoutPage = () => {
                       )}
                     </span>
                   </div>
-                  <div className="flex justify-between text-gray-600">
-                    <span>Tax (GST)</span>
+                  <div className="flex justify-between text-gray-700">
+                    <span>Tax (18%)</span>
                     <span className="font-semibold">₹{tax}</span>
                   </div>
+
                   <div className="border-t pt-3">
                     <div className="flex justify-between items-center">
                       <span className="text-lg font-semibold text-gray-900">
                         Total
                       </span>
-                      <span className="text-2xl font-bold text-primary-700">
+                      <span className="text-2xl font-bold text-amber-700">
                         ₹{total}
                       </span>
                     </div>
@@ -466,13 +399,17 @@ const CheckoutPage = () => {
 
                 <button
                   type="submit"
-                  className="w-full btn-primary py-4 text-lg"
+                  className="w-full bg-gradient-to-r from-amber-400 to-yellow-600 hover:from-amber-500 hover:to-yellow-700 
+                  text-white py-4 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 text-lg"
                 >
                   {paymentMethod === "razorpay" ? "Pay Now" : "Place Order"}
                 </button>
 
                 <p className="text-xs text-gray-600 text-center mt-4">
-                  By placing this order, you agree to our Terms & Conditions
+                  By placing this order, you agree to our{" "}
+                  <span className="text-amber-700 hover:underline cursor-pointer">
+                    Terms & Conditions
+                  </span>
                 </p>
               </div>
             </div>

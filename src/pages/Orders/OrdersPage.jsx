@@ -1,4 +1,3 @@
-// src/pages/Orders/OrdersPage.jsx
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -13,161 +12,153 @@ const OrdersPage = () => {
     dispatch(fetchMyOrders());
   }, [dispatch]);
 
-  const getStatusColor = (status) => {
+  const getStatusStyle = (status) => {
+    const base =
+      "flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-full shadow-sm border";
     switch (status) {
       case "Processing":
-        return "bg-yellow-100 text-yellow-800";
+        return `${base} bg-amber-50 text-amber-700 border-amber-200`;
       case "Shipped":
-        return "bg-blue-100 text-blue-800";
+        return `${base} bg-blue-50 text-blue-700 border-blue-200`;
       case "Delivered":
-        return "bg-green-100 text-green-800";
+        return `${base} bg-green-50 text-green-700 border-green-200`;
       case "Cancelled":
-        return "bg-red-100 text-red-800";
+        return `${base} bg-red-50 text-red-700 border-red-200`;
       default:
-        return "bg-gray-100 text-gray-800";
+        return `${base} bg-gray-50 text-gray-700 border-gray-200`;
     }
   };
 
   const getStatusIcon = (status) => {
     switch (status) {
       case "Processing":
-        return <FiPackage />;
+        return <FiPackage className="text-amber-600" />;
       case "Shipped":
-        return <FiTruck />;
+        return <FiTruck className="text-blue-600" />;
       case "Delivered":
-        return <FiCheckCircle />;
+        return <FiCheckCircle className="text-green-600" />;
       default:
-        return <FiPackage />;
+        return <FiPackage className="text-gray-500" />;
     }
   };
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-16">
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-primary-600"></div>
-        </div>
+      <div className="flex justify-center items-center h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-amber-600"></div>
       </div>
     );
   }
 
   if (orders.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-md mx-auto text-center">
-          <div className="text-6xl mb-6">📦</div>
-          <h2 className="text-3xl font-display font-bold text-gray-900 mb-4">
-            No Orders Yet
-          </h2>
-          <p className="text-gray-600 mb-8">
-            Looks like you haven't placed any orders
-          </p>
-          <Link
-            to="/products"
-            className="inline-block bg-primary-600 hover:bg-primary-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
-          >
-            Start Shopping
-          </Link>
-        </div>
+      <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-amber-50 via-white to-amber-100 text-center px-4">
+        <div className="text-6xl mb-4">📦</div>
+        <h2 className="text-3xl font-display font-bold text-amber-900 mb-3">
+          No Orders Yet
+        </h2>
+        <p className="text-gray-700 mb-8 max-w-sm">
+          You haven’t placed any orders yet — your journey starts here.
+        </p>
+        <Link
+          to="/products"
+          className="bg-gradient-to-r from-amber-400 to-yellow-600 hover:from-amber-500 hover:to-yellow-700 text-white px-8 py-3 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all"
+        >
+          Start Shopping
+        </Link>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen py-8">
+    <div className="bg-gradient-to-br from-amber-50 via-white to-amber-100 min-h-screen py-16">
       <div className="container mx-auto px-4">
-        <div className="mb-8">
-          <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-display font-bold text-amber-900 mb-2">
             My Orders
           </h1>
-          <p className="text-gray-600">{orders.length} orders found</p>
+          <p className="text-gray-600 text-sm">
+            {orders.length} {orders.length === 1 ? "order" : "orders"} found
+          </p>
         </div>
 
-        <div className="space-y-6">
+        {/* Orders Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
           {orders.map((order) => (
             <div
               key={order._id}
-              className="bg-white rounded-xl shadow-sm overflow-hidden"
+              className="bg-white border border-amber-100 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group"
             >
-              <div className="p-6 border-b border-gray-200">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-                  <div>
-                    <div className="flex items-center space-x-3 mb-2">
-                      <span className="text-sm text-gray-600">Order ID:</span>
-                      <span className="font-semibold text-gray-900">
-                        #{order._id.slice(-8)}
-                      </span>
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      Placed on{" "}
-                      {new Date(order.createdAt).toLocaleDateString("en-IN", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </div>
+              {/* Order Header */}
+              <div className="bg-gradient-to-r from-amber-50 via-white to-amber-50 px-6 py-5 border-b border-gray-100 flex justify-between items-start">
+                <div>
+                  <div className="text-xs text-gray-500">Order ID</div>
+                  <div className="text-sm font-semibold text-gray-800 tracking-wide">
+                    #{order._id.slice(-8)}
                   </div>
-
-                  <div className="mt-4 md:mt-0 flex items-center space-x-4">
-                    <span
-                      className={`px-4 py-2 rounded-full text-sm font-semibold flex items-center space-x-2 ${getStatusColor(
-                        order.orderStatus
-                      )}`}
-                    >
-                      {getStatusIcon(order.orderStatus)}
-                      <span>{order.orderStatus}</span>
-                    </span>
+                  <div className="text-xs text-gray-500 mt-1">
+                    Placed on{" "}
+                    {new Date(order.createdAt).toLocaleDateString("en-IN", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
                   </div>
                 </div>
+                <span className={getStatusStyle(order.orderStatus)}>
+                  {getStatusIcon(order.orderStatus)}
+                  {order.orderStatus}
+                </span>
               </div>
 
-              <div className="p-6">
-                <div className="space-y-4">
-                  {order.orderItems.map((item, index) => (
-                    <div key={index} className="flex space-x-4">
+              {/* Items */}
+              <div className="px-6 py-5 space-y-4">
+                {order.orderItems.slice(0, 2).map((item, index) => (
+                  <div key={index} className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-xl overflow-hidden border border-amber-100 shadow-sm">
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-20 h-20 object-cover rounded-lg"
+                        className="w-full h-full object-cover"
                       />
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900">
-                          {item.name}
-                        </h3>
-                        {item.variant && (
-                          <p className="text-sm text-gray-600">
-                            Size: {item.variant.size}
-                          </p>
-                        )}
-                        <div className="flex items-center justify-between mt-2">
-                          <span className="text-sm text-gray-600">
-                            Qty: {item.quantity}
-                          </span>
-                          <span className="font-semibold text-gray-900">
-                            ₹{item.price}
-                          </span>
-                        </div>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-sm font-semibold text-gray-900 line-clamp-1">
+                        {item.name}
+                      </h3>
+                      <p className="text-xs text-gray-600">
+                        Qty: {item.quantity}
+                      </p>
+                      <div className="text-sm font-semibold text-amber-800">
+                        ₹{item.price}
                       </div>
                     </div>
-                  ))}
-                </div>
-
-                <div className="mt-6 pt-6 border-t border-gray-200">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <div className="text-sm text-gray-600 mb-1">
-                        Total Amount
-                      </div>
-                      <div className="text-2xl font-bold text-primary-700">
-                        ₹{order.totalPrice}
-                      </div>
-                    </div>
-
-                    <Link to={`/order/${order._id}`} className="btn-primary">
-                      View Details
-                    </Link>
                   </div>
+                ))}
+
+                {/* Show "+N more" */}
+                {order.orderItems.length > 2 && (
+                  <p className="text-xs text-gray-500 italic">
+                    +{order.orderItems.length - 2} more items
+                  </p>
+                )}
+              </div>
+
+              {/* Footer */}
+              <div className="px-6 py-4 border-t border-gray-100 flex justify-between items-center bg-white">
+                <div>
+                  <p className="text-xs text-gray-600">Total Amount</p>
+                  <p className="text-lg font-bold text-amber-800">
+                    ₹{order.totalPrice}
+                  </p>
                 </div>
+                <Link
+                  to={`/order/${order._id}`}
+                  className="bg-gradient-to-r from-amber-400 to-yellow-600 hover:from-amber-500 hover:to-yellow-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-md hover:shadow-lg transition-all"
+                >
+                  View Details
+                </Link>
               </div>
             </div>
           ))}

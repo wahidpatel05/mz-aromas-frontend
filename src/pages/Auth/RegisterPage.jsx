@@ -1,5 +1,3 @@
-// src/pages/Auth/RegisterPage.jsx - FIXED VERSION
-
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +11,7 @@ import {
 } from "react-icons/fi";
 import { registerUser } from "../../store/slices/authSlice";
 import { toast } from "react-toastify";
+import logo from "../../assets/logo.png";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -25,17 +24,12 @@ const RegisterPage = () => {
     confirmPassword: "",
   });
   const [avatar, setAvatar] = useState("");
-  const [avatarPreview, setAvatarPreview] = useState(
-    "/images/default-avatar.png"
-  );
+  const [avatarPreview, setAvatarPreview] = useState("/images/default-avatar.png");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const { isAuthenticated, loading, error } = useSelector(
-    (state) => state.auth
-  );
+  const { isAuthenticated, loading, error } = useSelector((state) => state.auth);
 
-  // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/");
@@ -43,89 +37,81 @@ const RegisterPage = () => {
   }, [isAuthenticated, navigate]);
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-
     if (file) {
-      // File size validation (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
         toast.error("Image size should be less than 5MB");
         return;
       }
-
       const reader = new FileReader();
-
       reader.onload = () => {
         if (reader.readyState === 2) {
           setAvatarPreview(reader.result);
           setAvatar(reader.result);
         }
       };
-
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Validation
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match");
       return;
     }
-
     if (formData.password.length < 8) {
       toast.error("Password must be at least 8 characters");
       return;
     }
-
     if (!avatar) {
       toast.error("Please upload a profile picture");
       return;
     }
 
-    const userData = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      avatar: avatar,
-    };
-
-    // Dispatch Redux action
-    dispatch(registerUser(userData));
+    dispatch(
+      registerUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        avatar,
+      })
+    );
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-accent-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full">
-        {/* Header */}
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Decorative Ambient Glows */}
+      <div className="absolute top-0 left-0 w-80 h-80 bg-amber-200/40 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-yellow-300/30 rounded-full blur-3xl animate-pulse delay-200"></div>
+
+      <div className="relative max-w-md w-full z-10 backdrop-blur-sm">
+        {/* Logo Header */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-block mb-6">
-            <h1 className="text-4xl font-display font-bold text-primary-700">
-              MZ <span className="text-accent-600">Aromas</span>
-            </h1>
+            <img
+              src={logo}
+              alt="MZ Aromas Logo"
+              className="h-14 scale-[2.5] w-auto mx-auto drop-shadow-md transition-transform hover:scale-[2.5] duration-300"
+            />
           </Link>
-          <h2 className="text-3xl font-display font-bold text-gray-900 mb-2">
+          <h2 className="text-3xl font-display font-bold text-amber-800 mb-2">
             Create Account
           </h2>
-          <p className="text-gray-600">
-            Join us for the best aromatic experience
+          <p className="text-gray-600 text-sm">
+            Join us for a luxurious aromatic journey ✨
           </p>
         </div>
 
         {/* Register Form Card */}
-        <div className="bg-white rounded-xl shadow-xl p-8 border border-gray-100">
-          {/* Error Display */}
+        <div className="bg-white/90 rounded-2xl shadow-xl border border-amber-100 p-8 backdrop-blur-md hover:shadow-amber-200/50 transition-shadow duration-500">
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-600 text-center">{error}</p>
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-center text-sm text-red-600">
+              {error}
             </div>
           )}
 
@@ -136,11 +122,11 @@ const RegisterPage = () => {
                 <img
                   src={avatarPreview}
                   alt="Avatar Preview"
-                  className="w-24 h-24 rounded-full object-cover border-4 border-primary-100 shadow-lg"
+                  className="w-24 h-24 rounded-full object-cover border-4 border-amber-100 shadow-md"
                 />
                 <label
                   htmlFor="avatar-upload"
-                  className="absolute bottom-0 right-0 bg-primary-600 text-white p-2 rounded-full cursor-pointer hover:bg-primary-700 transition-colors shadow-lg"
+                  className="absolute bottom-0 right-0 bg-gradient-to-r from-amber-400 to-yellow-600 text-white p-2 rounded-full cursor-pointer hover:scale-105 transition-transform shadow-md"
                 >
                   <FiCamera size={16} />
                   <input
@@ -154,130 +140,93 @@ const RegisterPage = () => {
               </div>
             </div>
 
-            {/* Name Field */}
+            {/* Name */}
             <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Full Name
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiUser className="text-gray-400" size={20} />
-                </div>
+                <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-600" size={18} />
                 <input
                   type="text"
-                  id="name"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
                   placeholder="John Doe"
-                  minLength="4"
                   required
-                  autoComplete="name"
+                  minLength={4}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-200 focus:border-amber-400 text-gray-800 placeholder-gray-400 transition-all"
                 />
               </div>
             </div>
 
-            {/* Email Field */}
+            {/* Email */}
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Email Address
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiMail className="text-gray-400" size={20} />
-                </div>
+                <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-600" size={18} />
                 <input
                   type="email"
-                  id="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
                   placeholder="your@email.com"
                   required
-                  autoComplete="email"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-200 focus:border-amber-400 text-gray-800 placeholder-gray-400 transition-all"
                 />
               </div>
             </div>
 
-            {/* Password Field */}
+            {/* Password */}
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Password
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiLock className="text-gray-400" size={20} />
-                </div>
+                <FiLock className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-600" size={18} />
                 <input
                   type={showPassword ? "text" : "password"}
-                  id="password"
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
                   placeholder="••••••••"
-                  minLength="8"
                   required
-                  autoComplete="new-password"
+                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-200 focus:border-amber-400 text-gray-800 placeholder-gray-400 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center hover:text-primary-600 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-amber-600 transition"
                 >
-                  {showPassword ? (
-                    <FiEyeOff className="text-gray-400" size={20} />
-                  ) : (
-                    <FiEye className="text-gray-400" size={20} />
-                  )}
+                  {showPassword ? <FiEyeOff /> : <FiEye />}
                 </button>
               </div>
             </div>
 
-            {/* Confirm Password Field */}
+            {/* Confirm Password */}
             <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Confirm Password
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiLock className="text-gray-400" size={20} />
-                </div>
+                <FiLock className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-600" size={18} />
                 <input
                   type={showConfirmPassword ? "text" : "password"}
-                  id="confirmPassword"
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
                   placeholder="••••••••"
                   required
-                  autoComplete="new-password"
+                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-200 focus:border-amber-400 text-gray-800 placeholder-gray-400 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center hover:text-primary-600 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-amber-600 transition"
                 >
-                  {showConfirmPassword ? (
-                    <FiEyeOff className="text-gray-400" size={20} />
-                  ) : (
-                    <FiEye className="text-gray-400" size={20} />
-                  )}
+                  {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
                 </button>
               </div>
             </div>
@@ -286,7 +235,7 @@ const RegisterPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-4 rounded-lg font-semibold hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="w-full bg-gradient-to-r from-amber-400 to-yellow-600 text-white py-3 rounded-lg font-semibold shadow-md hover:shadow-lg hover:from-amber-500 hover:to-yellow-700 transition-all disabled:opacity-60 flex items-center justify-center"
             >
               {loading ? (
                 <>
@@ -319,38 +268,32 @@ const RegisterPage = () => {
           </form>
 
           {/* Divider */}
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">
-                  Already have an account?
-                </span>
-              </div>
+          <div className="mt-6 relative flex justify-center text-sm">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
             </div>
+            <span className="px-2 bg-white text-gray-500">Already a member?</span>
+          </div>
 
-            {/* Login Link */}
-            <div className="mt-6">
-              <Link
-                to="/login"
-                className="w-full border-2 border-primary-600 text-primary-600 py-3 px-4 rounded-lg font-semibold hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all text-center block"
-              >
-                Login
-              </Link>
-            </div>
+          {/* Login Link */}
+          <div className="mt-6">
+            <Link
+              to="/login"
+              className="w-full border-2 border-amber-500 text-amber-700 py-3 px-4 rounded-lg font-semibold hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 transition-all text-center block"
+            >
+              Login
+            </Link>
           </div>
         </div>
 
         {/* Terms */}
         <p className="text-center text-xs text-gray-600 mt-6">
           By creating an account, you agree to our{" "}
-          <Link to="/terms" className="text-primary-600 hover:underline">
+          <Link to="/terms" className="text-amber-700 hover:underline">
             Terms of Service
           </Link>{" "}
           and{" "}
-          <Link to="/privacy" className="text-primary-600 hover:underline">
+          <Link to="/privacy" className="text-amber-700 hover:underline">
             Privacy Policy
           </Link>
         </p>

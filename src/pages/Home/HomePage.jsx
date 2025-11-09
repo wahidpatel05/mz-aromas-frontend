@@ -21,8 +21,8 @@ const HomePage = () => {
     <div className="bg-primary-50 text-gray-800 min-h-screen font-body">
       <HeroSection />
       <FeaturesSection />
-      <CategoriesSection />
       <FeaturedProductsSection />
+      <CategoriesSection />
       <WhyChooseUsSection />
       <NewsletterSection />
     </div>

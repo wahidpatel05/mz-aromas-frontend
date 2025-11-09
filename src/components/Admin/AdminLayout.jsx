@@ -14,6 +14,7 @@ import {
   FiLogOut,
 } from "react-icons/fi";
 import { logoutUser } from "../../store/slices/authSlice";
+import logo from "../../assets/logo.png"; // ✅ Imported logo properly
 
 const AdminLayout = () => {
   const location = useLocation();
@@ -39,11 +40,16 @@ const AdminLayout = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Mobile Header */}
       <div className="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-50 shadow-sm">
-        <Link
-          to="/"
-          className="text-2xl font-display font-bold text-amber-700 tracking-wide"
-        >
-          MZ Aromas
+        <Link to="/" className="flex items-center space-x-2">
+          <img
+  src={logo}
+  alt="MZ Aromas Logo"
+  className="h-14 w-auto object-contain scale-[1.3]"
+/>
+
+          <span className="text-lg font-display font-semibold text-amber-700 tracking-wide">
+            Admin
+          </span>
         </Link>
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -62,15 +68,16 @@ const AdminLayout = () => {
               : "-translate-x-full lg:translate-x-0"
           }`}
         >
-          {/* Logo */}
-          <div className="hidden lg:block p-6 border-b border-gray-100">
-            <Link
-              to="/"
-              className="text-2xl font-display font-bold text-amber-700"
-            >
-              MZ Aromas
+          {/* Logo Section */}
+          <div className="hidden lg:flex flex-col items-center justify-center py-6 border-b border-gray-100">
+            <Link to="/" className="flex flex-col items-center space-y-2">
+              <img
+                src={logo}
+                alt="MZ Aromas Logo"
+                className="h-12 scale-[2.3] w-auto object-contain"
+              />
+              <p className="text-sm text-gray-500 font-medium">Admin Panel</p>
             </Link>
-            <p className="text-sm text-gray-500 mt-1">Admin Panel</p>
           </div>
 
           {/* User Info */}

@@ -50,153 +50,162 @@ const OrdersListPage = () => {
     }
   };
 
-  const filteredOrders = orders.filter((order) => {
-    if (filter === "all") return true;
-    return order.orderStatus === filter;
-  });
+  const filteredOrders = orders.filter((order) =>
+    filter === "all" ? true : order.orderStatus === filter
+  );
 
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-amber-500"></div>
       </div>
     );
   }
 
   return (
-    <div>
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">
-          Orders Management
-        </h1>
-        <p className="text-gray-600">{orders.length} total orders</p>
-      </div>
-
-      {/* Filters */}
-      <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
-        <div className="flex flex-wrap gap-3">
-          {["all", "Processing", "Shipped", "Delivered", "Cancelled"].map(
-            (status) => (
-              <button
-                key={status}
-                onClick={() => setFilter(status)}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  filter === status
-                    ? "bg-primary-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {status === "all" ? "All Orders" : status}
-              </button>
-            )
-          )}
+    <div className="bg-gradient-to-br from-amber-50 via-white to-amber-100 min-h-screen py-10 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-10">
+          <h1 className="text-4xl font-display font-bold text-amber-900 mb-2 flex items-center gap-2">
+            <FiPackage className="text-amber-600" /> Orders Management
+          </h1>
+          <p className="text-gray-600">
+            {orders.length} total orders — manage and track order statuses.
+          </p>
         </div>
-      </div>
 
-      {/* Orders Table */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700">
-                  Order ID
-                </th>
-                <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700">
-                  Customer
-                </th>
-                <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700">
-                  Items
-                </th>
-                <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700">
-                  Amount
-                </th>
-                <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700">
-                  Payment
-                </th>
-                <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700">
-                  Status
-                </th>
-                <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700">
-                  Date
-                </th>
-                <th className="text-left py-4 px-6 text-sm font-semibold text-gray-700">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredOrders.map((order) => (
-                <tr
-                  key={order._id}
-                  className="border-b border-gray-100 hover:bg-gray-50"
+        {/* Filters */}
+        <div className="bg-white border border-amber-100 rounded-2xl shadow-sm hover:shadow-md p-5 mb-8 transition">
+          <div className="flex flex-wrap gap-3">
+            {["all", "Processing", "Shipped", "Delivered", "Cancelled"].map(
+              (status) => (
+                <button
+                  key={status}
+                  onClick={() => setFilter(status)}
+                  className={`px-5 py-2.5 rounded-xl font-medium text-sm shadow-sm transition-all ${
+                    filter === status
+                      ? "bg-gradient-to-r from-amber-400 to-yellow-600 text-white shadow-md scale-[1.03]"
+                      : "bg-gray-100 text-gray-700 hover:bg-amber-50 hover:text-amber-700"
+                  }`}
                 >
-                  <td className="py-4 px-6">
-                    <span className="font-medium text-gray-900">
-                      #{order._id.slice(-8)}
-                    </span>
-                  </td>
-                  <td className="py-4 px-6">
-                    <div>
-                      <p className="font-medium text-gray-900">
-                        {order.user?.name}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        {order.user?.email}
-                      </p>
-                    </div>
-                  </td>
-                  <td className="py-4 px-6 text-gray-700">
-                    {order.orderItems.length} items
-                  </td>
-                  <td className="py-4 px-6">
-                    <p className="font-semibold text-gray-900">
-                      ₹{order.totalPrice}
-                    </p>
-                  </td>
-                  <td className="py-4 px-6">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        order.paymentInfo.type === "COD"
-                          ? "bg-orange-100 text-orange-800"
-                          : "bg-green-100 text-green-800"
-                      }`}
+                  {status === "all" ? "All Orders" : status}
+                </button>
+              )
+            )}
+          </div>
+        </div>
+
+        {/* Orders Table */}
+        <div className="bg-white border border-amber-100 rounded-2xl shadow-sm hover:shadow-md transition overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-amber-50 border-b border-amber-100">
+                <tr>
+                  {[
+                    "Order ID",
+                    "Customer",
+                    "Items",
+                    "Amount",
+                    "Payment",
+                    "Status",
+                    "Date",
+                    "Actions",
+                  ].map((heading, idx) => (
+                    <th
+                      key={idx}
+                      className="text-left py-4 px-6 font-semibold text-amber-900 text-sm uppercase tracking-wide"
                     >
-                      {order.paymentInfo.type}
-                    </span>
-                  </td>
-                  <td className="py-4 px-6">
-                    <select
-                      value={order.orderStatus}
-                      onChange={(e) =>
-                        handleStatusUpdate(order._id, e.target.value)
-                      }
-                      className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                        order.orderStatus
-                      )}`}
-                    >
-                      <option value="Processing">Processing</option>
-                      <option value="Shipped">Shipped</option>
-                      <option value="Delivered">Delivered</option>
-                      <option value="Cancelled">Cancelled</option>
-                    </select>
-                  </td>
-                  <td className="py-4 px-6 text-gray-600 text-sm">
-                    {new Date(order.createdAt).toLocaleDateString()}
-                  </td>
-                  <td className="py-4 px-6">
-                    <Link
-                      to={`/admin/orders/${order._id}`}
-                      className="text-blue-600 hover:text-blue-700"
-                    >
-                      <FiEye size={18} />
-                    </Link>
-                  </td>
+                      {heading}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredOrders.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan="8"
+                      className="text-center py-10 text-gray-500 text-base"
+                    >
+                      No orders found for this filter.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredOrders.map((order, index) => (
+                    <tr
+                      key={order._id}
+                      className={`border-b border-gray-100 transition ${
+                        index % 2 === 0
+                          ? "bg-white"
+                          : "bg-amber-50/30 hover:bg-amber-100/40"
+                      } hover:shadow-sm`}
+                    >
+                      <td className="py-4 px-6 font-semibold text-gray-900">
+                        #{order._id.slice(-8)}
+                      </td>
+                      <td className="py-4 px-6">
+                        <div>
+                          <p className="font-semibold text-gray-900">
+                            {order.user?.name || "N/A"}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {order.user?.email}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="py-4 px-6 text-gray-700">
+                        {order.orderItems.length} item
+                        {order.orderItems.length > 1 ? "s" : ""}
+                      </td>
+                      <td className="py-4 px-6 font-semibold text-gray-900">
+                        ₹{order.totalPrice}
+                      </td>
+                      <td className="py-4 px-6">
+                        <span
+                          className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
+                            order.paymentInfo.type === "COD"
+                              ? "bg-orange-100 text-orange-800"
+                              : "bg-green-100 text-green-800"
+                          }`}
+                        >
+                          {order.paymentInfo.type}
+                        </span>
+                      </td>
+                      <td className="py-4 px-6">
+                        <select
+                          value={order.orderStatus}
+                          onChange={(e) =>
+                            handleStatusUpdate(order._id, e.target.value)
+                          }
+                          className={`px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer ${getStatusColor(
+                            order.orderStatus
+                          )} border-none focus:ring-2 focus:ring-amber-200 outline-none`}
+                        >
+                          <option value="Processing">Processing</option>
+                          <option value="Shipped">Shipped</option>
+                          <option value="Delivered">Delivered</option>
+                          <option value="Cancelled">Cancelled</option>
+                        </select>
+                      </td>
+                      <td className="py-4 px-6 text-gray-600 text-sm">
+                        {new Date(order.createdAt).toLocaleDateString()}
+                      </td>
+                      <td className="py-4 px-6 text-center">
+                        <Link
+                          to={`/admin/orders/${order._id}`}
+                          className="inline-flex items-center justify-center bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-full p-2 transition-all"
+                          title="View Details"
+                        >
+                          <FiEye size={16} />
+                        </Link>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

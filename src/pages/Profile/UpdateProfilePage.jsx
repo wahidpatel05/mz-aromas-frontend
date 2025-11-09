@@ -1,4 +1,3 @@
-// src/pages/Profile/UpdateProfilePage.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -66,33 +65,44 @@ const UpdateProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100 py-12">
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto">
+          {/* Back Button */}
           <button
             onClick={() => navigate("/profile")}
-            className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 mb-6"
+            className="flex items-center space-x-2 text-gray-700 hover:text-amber-700 mb-8 transition"
           >
             <FiArrowLeft />
             <span>Back to Profile</span>
           </button>
 
-          <div className="bg-white rounded-xl shadow-sm p-8">
-            <h1 className="text-3xl font-display font-bold text-gray-900 mb-8">
-              Update Profile
-            </h1>
+          {/* Card */}
+          <div className="bg-white/95 border border-amber-100 rounded-2xl shadow-md hover:shadow-lg transition-all p-8">
+            <div className="text-center mb-10">
+              <div className="w-16 h-16 mx-auto rounded-full bg-amber-100 flex items-center justify-center mb-4">
+                <FiCamera className="text-amber-700" size={28} />
+              </div>
+              <h1 className="text-3xl font-display font-bold text-amber-900">
+                Update Profile
+              </h1>
+              <p className="text-gray-600 text-sm mt-1">
+                Keep your information up-to-date for a better experience
+              </p>
+            </div>
 
+            {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Avatar Upload */}
               <div className="flex justify-center">
-                <div className="relative">
+                <div className="relative group">
                   <img
                     src={avatarPreview}
                     alt="Avatar Preview"
-                    className="w-32 h-32 rounded-full object-cover border-4 border-primary-100"
+                    className="w-32 h-32 rounded-full object-cover border-4 border-amber-200 shadow-sm transition-transform duration-300 group-hover:scale-105"
                   />
-                  <label className="absolute bottom-0 right-0 bg-primary-600 text-white p-3 rounded-full cursor-pointer hover:bg-primary-700 transition-colors">
-                    <FiCamera size={20} />
+                  <label className="absolute bottom-0 right-0 bg-gradient-to-r from-amber-400 to-yellow-600 text-white p-3 rounded-full cursor-pointer shadow-md hover:from-amber-500 hover:to-yellow-700 transition-all">
+                    <FiCamera size={18} />
                     <input
                       type="file"
                       accept="image/*"
@@ -105,7 +115,7 @@ const UpdateProfilePage = () => {
 
               {/* Name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-800 mb-2">
                   Full Name
                 </label>
                 <input
@@ -113,14 +123,14 @@ const UpdateProfilePage = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="input-field"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-amber-400 focus:border-amber-400 outline-none transition"
                   required
                 />
               </div>
 
               {/* Email */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-800 mb-2">
                   Email Address
                 </label>
                 <input
@@ -128,24 +138,24 @@ const UpdateProfilePage = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="input-field"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-amber-400 focus:border-amber-400 outline-none transition"
                   required
                 />
               </div>
 
-              {/* Submit Button */}
-              <div className="flex space-x-4">
+              {/* Buttons */}
+              <div className="flex flex-wrap gap-4 pt-2">
                 <button
                   type="submit"
                   disabled={loading}
-                  className="flex-1 btn-primary py-3"
+                  className="flex-1 bg-gradient-to-r from-amber-400 to-yellow-600 hover:from-amber-500 hover:to-yellow-700 text-white py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all"
                 >
                   {loading ? "Updating..." : "Update Profile"}
                 </button>
                 <button
                   type="button"
                   onClick={() => navigate("/profile")}
-                  className="flex-1 btn-secondary py-3"
+                  className="flex-1 border border-gray-300 bg-white hover:bg-gray-50 text-gray-800 py-3 rounded-lg font-semibold transition-all"
                 >
                   Cancel
                 </button>

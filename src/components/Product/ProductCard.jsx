@@ -63,38 +63,48 @@ const ProductCard = ({ product }) => {
       : 0;
 
   return (
-    <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group">
+    <div
+      className="bg-white border border-amber-100 rounded-2xl overflow-hidden 
+      shadow-sm hover:shadow-lg hover:border-amber-200 hover:shadow-amber-100/50 
+      transition-all duration-500 group hover:-translate-y-2 backdrop-blur-sm"
+    >
       <Link to={`/product/${product.slug}`} className="block">
-        {/* Image Section */}
-        <div className="relative bg-[#fafafa] overflow-hidden">
+        {/* 🖼️ Image Section */}
+        <div className="relative bg-amber-50 overflow-hidden">
           <img
             src={product.images[0]?.url}
             alt={product.name}
-            className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
           />
 
-          {/* Discount Badge */}
+          {/* 🏷️ Discount Badge */}
           {discount > 0 && (
-            <div className="absolute top-3 left-3 bg-pink-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+            <div className="absolute top-3 left-3 bg-gradient-to-r from-amber-500 to-yellow-600 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-md">
               {discount}% OFF
             </div>
           )}
 
-          {/* Wishlist Button */}
+          {/* 💛 Wishlist Button */}
           <button
             onClick={handleWishlist}
-            className={`absolute top-3 right-3 bg-white p-2 rounded-full shadow-sm hover:bg-pink-50 transition-colors ${
-              isInWishlist ? "text-pink-500" : "text-gray-600"
+            className={`absolute top-3 right-3 bg-white/90 p-2 rounded-full shadow-md hover:bg-amber-50 transition-all duration-300 ${
+              isInWishlist ? "text-amber-600" : "text-gray-600"
             }`}
           >
             <FiHeart size={20} fill={isInWishlist ? "currentColor" : "none"} />
           </button>
 
-          {/* Quick Add to Cart */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white/95 to-transparent opacity-0 group-hover:opacity-100 p-4 transition-opacity duration-300">
+          {/* 🛒 Quick Add to Cart */}
+          <div
+            className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white/95 to-transparent 
+            opacity-0 translate-y-4 group-hover:translate-y-0 group-hover:opacity-100 
+            p-4 transition-all duration-500 ease-out"
+          >
             <button
               onClick={handleAddToCart}
-              className="w-full bg-pink-500 text-white py-2 rounded-xl font-medium hover:bg-pink-600 transition-colors flex items-center justify-center gap-2"
+              className="w-full bg-gradient-to-r from-amber-400 to-yellow-600 hover:from-amber-500 hover:to-yellow-700 
+              text-white py-2.5 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-300 
+              flex items-center justify-center gap-2"
             >
               <FiShoppingCart />
               <span>
@@ -104,13 +114,13 @@ const ProductCard = ({ product }) => {
           </div>
         </div>
 
-        {/* Product Info */}
-        <div className="p-4">
-          <p className="text-xs text-pink-600 font-medium uppercase tracking-wide mb-1">
+        {/* 🧾 Product Info */}
+        <div className="p-5">
+          <p className="text-xs text-amber-600 font-semibold uppercase tracking-wide mb-1">
             {product.category?.name}
           </p>
 
-          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 h-12 leading-snug">
+          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 h-12 leading-snug group-hover:text-amber-700 transition-colors duration-300">
             {product.name}
           </h3>
 

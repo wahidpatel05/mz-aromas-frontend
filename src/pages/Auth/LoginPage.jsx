@@ -1,76 +1,65 @@
-// src/pages/Auth/LoginPage.jsx - FIXED VERSION
-
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { loginUser } from "../../store/slices/authSlice";
+import logo from "../../assets/logo.png"; // 🟡 MZ Aromas Logo
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
 
-  const { isAuthenticated, loading, error } = useSelector(
-    (state) => state.auth
-  );
-
+  const { isAuthenticated, loading, error } = useSelector((state) => state.auth);
   const from = location.state?.from?.pathname || "/";
 
-  // Redirect agar already logged in hai
+  // Redirect if already logged in
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate(from, { replace: true });
-    }
+    if (isAuthenticated) navigate(from, { replace: true });
   }, [isAuthenticated, navigate, from]);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Basic validation
-    if (!formData.email || !formData.password) {
-      return;
-    }
-
-    // Redux action dispatch
+    if (!formData.email || !formData.password) return;
     dispatch(loginUser(formData));
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-accent-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <Link to="/" className="inline-block mb-6">
-            <h1 className="text-4xl font-display font-bold text-primary-700">
-              MZ <span className="text-accent-600">Aromas</span>
-            </h1>
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Decorative background glows */}
+      <div className="absolute top-0 left-0 w-72 h-72 bg-amber-200/40 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-0 right-0 w-80 h-80 bg-yellow-300/30 rounded-full blur-3xl animate-pulse delay-200"></div>
+
+      <div className="relative max-w-md w-full z-10 backdrop-blur-sm">
+        {/* Logo & Heading */}
+        <div className="text-center mb-10">
+          <Link  className="inline-block">
+            <img
+              src={logo}
+              alt="MZ Aromas Logo"
+              className="h-14 scale-[2.5] w-auto mx-auto drop-shadow-md transition-transform hover:scale-[2.5] duration-300"
+            />
           </Link>
-          <h2 className="text-3xl font-display font-bold text-gray-900 mb-2">
+          <h2 className="text-3xl font-display font-bold text-amber-800 mb-1">
             Welcome Back
           </h2>
-          <p className="text-gray-600">Login to your account</p>
+          <p className="text-gray-600 text-sm">
+            Login to continue your aromatic journey ✨
+          </p>
         </div>
 
-        {/* Login Form Card */}
-        <div className="bg-white rounded-xl shadow-xl p-8 border border-gray-100">
-          {/* Error Display */}
+        {/* Form Card */}
+        <div className="bg-white/90 rounded-2xl shadow-xl border border-amber-100 p-8 backdrop-blur-md hover:shadow-amber-200/50 transition-shadow duration-500">
+          {/* Error */}
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-600 text-center">{error}</p>
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-center text-sm text-red-600">
+              {error}
             </div>
           )}
 
@@ -79,24 +68,24 @@ const LoginPage = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-semibold text-gray-700 mb-2"
               >
                 Email Address
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiMail className="text-gray-400" size={20} />
-                </div>
+                <FiMail
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-600"
+                  size={20}
+                />
                 <input
                   type="email"
                   id="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
-                  placeholder="your@email.com"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 transition-all text-gray-800 placeholder-gray-400"
+                  placeholder="you@example.com"
                   required
-                  autoComplete="email"
                 />
               </div>
             </div>
@@ -105,44 +94,40 @@ const LoginPage = () => {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-semibold text-gray-700 mb-2"
               >
                 Password
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiLock className="text-gray-400" size={20} />
-                </div>
+                <FiLock
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-600"
+                  size={20}
+                />
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+                  className="w-full pl-10 pr-12 py-3 rounded-lg border border-gray-300 focus:border-amber-400 focus:ring-2 focus:ring-amber-200 transition-all text-gray-800 placeholder-gray-400"
                   placeholder="••••••••"
                   required
-                  autoComplete="current-password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center hover:text-primary-600 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-amber-600 transition"
                 >
-                  {showPassword ? (
-                    <FiEyeOff className="text-gray-400" size={20} />
-                  ) : (
-                    <FiEye className="text-gray-400" size={20} />
-                  )}
+                  {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
                 </button>
               </div>
             </div>
 
-            {/* Forgot Password Link */}
+            {/* Forgot Password */}
             <div className="flex justify-end">
               <Link
                 to="/forgot-password"
-                className="text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors"
+                className="text-sm text-amber-700 hover:text-amber-800 font-medium"
               >
                 Forgot Password?
               </Link>
@@ -152,7 +137,7 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-4 rounded-lg font-semibold hover:from-primary-700 hover:to-primary-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              className="w-full bg-gradient-to-r from-amber-400 to-yellow-600 text-white py-3 rounded-lg font-semibold shadow-md hover:shadow-lg hover:from-amber-500 hover:to-yellow-700 transition-all duration-300 disabled:opacity-60 flex items-center justify-center"
             >
               {loading ? (
                 <>
@@ -182,41 +167,34 @@ const LoginPage = () => {
                 "Login"
               )}
             </button>
-          </form>
 
-          {/* Divider */}
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">
-                  Don't have an account?
-                </span>
-              </div>
+            {/* Divider */}
+            <div className="flex items-center my-6">
+              <div className="flex-1 border-t border-gray-300"></div>
+              <span className="px-3 text-sm text-gray-500 bg-white/80">
+                Don't have an account?
+              </span>
+              <div className="flex-1 border-t border-gray-300"></div>
             </div>
 
             {/* Register Link */}
-            <div className="mt-6">
-              <Link
-                to="/register"
-                className="w-full border-2 border-primary-600 text-primary-600 py-3 px-4 rounded-lg font-semibold hover:bg-primary-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all text-center block"
-              >
-                Create Account
-              </Link>
-            </div>
-          </div>
+            <Link
+              to="/register"
+              className="block w-full border-2 border-amber-400 text-amber-700 py-3 rounded-lg font-semibold text-center hover:bg-amber-50 transition-all duration-300"
+            >
+              Create Account
+            </Link>
+          </form>
         </div>
 
         {/* Terms */}
         <p className="text-center text-xs text-gray-600 mt-6">
           By logging in, you agree to our{" "}
-          <Link to="/terms" className="text-primary-600 hover:underline">
+          <Link to="/terms" className="text-amber-700 hover:underline">
             Terms of Service
           </Link>{" "}
           and{" "}
-          <Link to="/privacy" className="text-primary-600 hover:underline">
+          <Link to="/privacy" className="text-amber-700 hover:underline">
             Privacy Policy
           </Link>
         </p>
