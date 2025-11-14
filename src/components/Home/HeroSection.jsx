@@ -2,9 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
+import {
+  FiTruck,
+  FiDroplet,
+  FiHeart,
+  FiGift,
+} from "react-icons/fi";
+import { BsFlower1, BsGem } from "react-icons/bs";
 import hero2 from "../../assets/hero2.jpg";
-import hero3 from "../../assets/hero3.jpg";
+// import hero3 from "../../assets/hero3.jpg";
 import hero4 from "../../assets/hero4.jpg";
+import hero5 from "../../assets/mz.png";
+import hero6 from "../../assets/mz.jpeg";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -24,7 +33,7 @@ const HeroSection = () => {
       desc: "Experience the authentic essence of traditional Indian perfumery.",
       btn: "Shop Attars",
       link: "/products?category=attar",
-      image: hero3,
+      image: hero6,
     },
     {
       title: "Premium Agarbatti",
@@ -42,21 +51,51 @@ const HeroSection = () => {
     },
   ];
 
+  const marqueeItems = [
+    {
+      icon: <FiTruck className="text-amber-700" />,
+      text: "Shipping All Across Worldwide",
+    },
+    {
+      icon: <FiDroplet className="text-amber-700" />,
+      text: "100% Natural & Alcohol-Free Fragrances",
+    },
+    {
+      icon: <FiHeart className="text-amber-700" />,
+      text: "Handcrafted with Love – Only at MZ Aromas",
+    },
+    {
+      icon: <BsGem className="text-amber-700" />,
+      text: "Authentic. Long-Lasting. Luxurious.",
+    },
+    {
+      icon: <BsFlower1 className="text-amber-700" />,
+      text: "Discover the Essence of True Indian Perfumery",
+    },
+    {
+      icon: <FiGift className="text-amber-700" />,
+      text: "Exclusive Seasonal Discounts on Gift Sets",
+    },
+  ];
+
   return (
     <section
       className={`relative mb-24 font-sans overflow-hidden transition-opacity duration-[1800ms] ease-out ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
     >
-      {/* 🌸 Marquee Banner */}
-      <div className="w-full bg-gradient-to-r from-amber-50 via-amber-100 to-amber-50 text-amber-800 py-3 text-xs sm:text-sm border-b border-amber-200 relative overflow-hidden font-medium tracking-wide uppercase">
-        <div className="marquee-track flex whitespace-nowrap">
-          <span className="mx-8">🚚 Free Delivery on Orders Above ₹999</span>
-          <span className="mx-8">🌿 100% Natural & Alcohol-Free Fragrances</span>
-          <span className="mx-8">🕯️ Handcrafted with Love – Only at MZ Aromas</span>
-          <span className="mx-8">💎 Authentic. Long-Lasting. Luxurious.</span>
-          <span className="mx-8">🌸 Discover the Essence of True Indian Perfumery</span>
-          <span className="mx-8">✨ Exclusive Seasonal Discounts on Gift Sets</span>
+      {/* 🌟 Marquee Banner */}
+      <div className="w-full bg-gradient-to-r from-[#FFF8E1] via-[#FFFDF7] to-[#FFF8E1] text-amber-800 py-3 text-xs sm:text-sm border-b border-amber-200 relative overflow-hidden font-medium tracking-wide uppercase">
+        <div className="marquee-track flex whitespace-nowrap items-center gap-10">
+          {marqueeItems.map((item, idx) => (
+            <span
+              key={idx}
+              className="flex items-center gap-2 mx-8 text-[13px] sm:text-sm"
+            >
+              {item.icon}
+              {item.text}
+            </span>
+          ))}
         </div>
       </div>
 

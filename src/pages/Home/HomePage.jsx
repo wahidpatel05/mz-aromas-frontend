@@ -20,11 +20,11 @@ const HomePage = () => {
   return (
     <div className="bg-primary-50 text-gray-800 min-h-screen font-body">
       <HeroSection />
-      <FeaturesSection />
+      {/* <FeaturesSection /> */}
       <FeaturedProductsSection />
       <CategoriesSection />
       <WhyChooseUsSection />
-      <NewsletterSection />
+      {/* <NewsletterSection /> */}
     </div>
   );
 };

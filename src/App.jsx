@@ -16,6 +16,10 @@ import ProductsPage from "./pages/Products/ProductsPage";
 import ProductDetailPage from "./pages/Product/ProductDetailPage";
 import CartPage from "./pages/Cart/CartPage";
 import WishlistPage from "./pages/Wishlist/WishlistPage";
+import ContactPage from "./pages/Contact/ContactPage";
+import BlogPage from "./pages/Blog/BlogPage";
+import BlogDetailPage from "./pages/Blog/BlogDetailPage.jsx";
+import GalleryPage from "./pages/Gallery/GalleryPage";
 
 // Auth Pages
 import LoginPage from "./pages/Auth/LoginPage";
@@ -42,6 +46,8 @@ import OrdersListPage from "./pages/Admin/OrdersListPage";
 import OrderDetailAdminPage from "./pages/Admin/OrderDetailPage";
 import UsersListPage from "./pages/Admin/UsersListPage";
 import CategoriesListPage from "./pages/Admin/CategoriesListPage";
+
+
 
 // Redux
 import { getUserProfile } from "./store/slices/authSlice";
@@ -81,6 +87,8 @@ function App() {
           <Route path="orders/:id" element={<OrderDetailAdminPage />} />
           <Route path="users" element={<UsersListPage />} />
           <Route path="categories" element={<CategoriesListPage />} />
+          
+
         </Route>
 
         {/* Main App Routes */}
@@ -100,6 +108,11 @@ function App() {
                   />
                   <Route path="/cart" element={<CartPage />} />
                   <Route path="/wishlist" element={<WishlistPage />} />
+                  <Route path="contact" element={<ContactPage />} />
+                  <Route path="/blog" element={<BlogPage />} />
+                  <Route path="/blog/:id" element={<BlogDetailPage />} />
+                  <Route path="/gallery" element={<GalleryPage />} />
+
 
                   {/* Auth Routes */}
                   <Route path="/login" element={<LoginPage />} />

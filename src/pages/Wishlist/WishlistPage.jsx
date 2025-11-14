@@ -25,6 +25,8 @@ const WishlistPage = () => {
 
   const handleAddToCart = (item) => {
     const product = item.product;
+    if (!product) return; // 🛡️ Safety check
+
     dispatch(
       addToCart({
         product,
@@ -63,7 +65,7 @@ const WishlistPage = () => {
     );
   }
 
-  if (wishlistItems.length === 0) {
+  if (!wishlistItems || wishlistItems.length === 0) {
     return (
       <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-amber-50 via-white to-amber-100 px-4 text-center">
         <div className="text-6xl mb-4">💔</div>
@@ -93,7 +95,8 @@ const WishlistPage = () => {
             My Wishlist
           </h1>
           <p className="text-gray-700">
-            {wishlistItems.length} {wishlistItems.length === 1 ? "item" : "items"} saved
+            {wishlistItems.length}{" "}
+            {wishlistItems.length === 1 ? "item" : "items"} saved
           </p>
         </div>
 
@@ -101,6 +104,30 @@ const WishlistPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {wishlistItems.map((item) => {
             const product = item.product;
+
+            // 🧩 Fallback for missing product
+            if (!product) {
+              return (
+                <div
+                  key={item._id}
+                  className="bg-white/90 border border-amber-100 rounded-2xl p-6 shadow-sm flex flex-col items-center justify-center text-center text-gray-600 hover:shadow-lg hover:border-amber-200 transition-all duration-300"
+                >
+                  <p className="text-xl font-semibold mb-2">
+                    Product Unavailable
+                  </p>
+                  <p className="text-sm mb-4">
+                    This product is no longer available.
+                  </p>
+                  <button
+                    onClick={() => handleRemove(item._id)}
+                    className="text-red-500 hover:text-red-600 flex items-center gap-2 font-medium transition"
+                  >
+                    <FiTrash2 /> Remove
+                  </button>
+                </div>
+              );
+            }
+
             const displayPrice =
               product.variants?.length > 0
                 ? product.variants[0].discountPrice || product.variants[0].price
@@ -125,11 +152,14 @@ const WishlistPage = () => {
               >
                 <Link to={`/product/${product.slug}`} className="block">
                   {/* Product Image */}
-                  <div className="relative bg-amber-50 overflow-hidden">
+                  <div className="relative bg-black flex items-center justify-center overflow-hidden">
                     <img
-                      src={product.images[0]?.url}
+                      src={
+                        product.images?.[0]?.url ||
+                        "https://via.placeholder.com/300x300.png?text=No+Image"
+                      }
                       alt={product.name}
-                      className="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-64 object-contain bg-black p-4 transform group-hover:scale-110 transition-transform duration-500"
                     />
 
                     {discount > 0 && (
@@ -152,7 +182,7 @@ const WishlistPage = () => {
                   {/* Product Details */}
                   <div className="p-5">
                     <p className="text-xs text-amber-600 font-semibold uppercase tracking-wide mb-1">
-                      {product.category?.name}
+                      {product.category?.name || "Uncategorized"}
                     </p>
                     <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 h-12">
                       {product.name}

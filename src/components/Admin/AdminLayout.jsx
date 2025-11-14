@@ -14,7 +14,7 @@ import {
   FiLogOut,
 } from "react-icons/fi";
 import { logoutUser } from "../../store/slices/authSlice";
-import logo from "../../assets/logo.png"; // ✅ Imported logo properly
+import logo from "../../assets/bg_logo.png"; // 
 
 const AdminLayout = () => {
   const location = useLocation();
@@ -44,7 +44,7 @@ const AdminLayout = () => {
           <img
   src={logo}
   alt="MZ Aromas Logo"
-  className="h-14 w-auto object-contain scale-[1.3]"
+  className="h-8 w-auto object-contain "
 />
 
           <span className="text-lg font-display font-semibold text-amber-700 tracking-wide">

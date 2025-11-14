@@ -21,7 +21,7 @@ const CartPage = () => {
     if (newQuantity > 0) {
       dispatch(
         updateQuantity({
-          productId: item.product._id,
+          productId: item.product?._id,
           variantSize: item.variant?.size,
           quantity: newQuantity,
         })
@@ -32,7 +32,7 @@ const CartPage = () => {
   const handleRemove = (item) => {
     dispatch(
       removeFromCart({
-        productId: item.product._id,
+        productId: item.product?._id,
         variantSize: item.variant?.size,
       })
     );
@@ -42,7 +42,7 @@ const CartPage = () => {
     return cartItems.reduce((total, item) => {
       const price = item.variant
         ? item.variant.discountPrice || item.variant.price
-        : item.product.discountPrice || item.product.price;
+        : item.product?.discountPrice || item.product?.price || 0;
       return total + price * item.quantity;
     }, 0);
   };
@@ -61,7 +61,7 @@ const CartPage = () => {
   };
 
   // 🛍️ Empty Cart UI
-  if (cartItems.length === 0) {
+  if (!cartItems || cartItems.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-100 flex flex-col items-center justify-center px-6 py-20 text-center">
         <div className="text-7xl mb-4">🛒</div>
@@ -92,116 +92,125 @@ const CartPage = () => {
             Shopping Cart
           </h1>
           <p className="text-gray-600">
-            You have {cartItems.length} {cartItems.length > 1 ? "items" : "item"} in your cart
+            You have {cartItems.length}{" "}
+            {cartItems.length > 1 ? "items" : "item"} in your cart
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-6">
-            {cartItems.map((item) => {
-              const price = item.variant
-                ? item.variant.discountPrice || item.variant.price
-                : item.product.discountPrice || item.product.price;
-              const originalPrice = item.variant
-                ? item.variant.price
-                : item.product.price;
+            {cartItems
+              .filter((item) => item.product) // 🛡️ Ensure product exists
+              .map((item) => {
+                const price = item.variant
+                  ? item.variant.discountPrice || item.variant.price
+                  : item.product.discountPrice || item.product.price || 0;
 
-              return (
-                <div
-                  key={`${item.product._id}-${item.variant?.size || "default"}`}
-                  className="bg-white/90 border border-amber-100 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:border-amber-200 transition-all duration-300"
-                >
-                  <div className="flex flex-col sm:flex-row gap-6">
-                    {/* Product Image */}
-                    <Link
-                      to={`/product/${item.product.slug}`}
-                      className="flex-shrink-0"
-                    >
-                      <img
-                        src={item.product.images[0]?.url}
-                        alt={item.product.name}
-                        className="w-32 h-32 object-cover rounded-xl border border-amber-50 shadow-sm hover:scale-105 transition-transform duration-300"
-                      />
-                    </Link>
+                const originalPrice = item.variant
+                  ? item.variant.price
+                  : item.product.price || 0;
 
-                    {/* Product Details */}
-                    <div className="flex-1">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <Link
-                            to={`/product/${item.product.slug}`}
-                            className="font-semibold text-gray-900 hover:text-amber-700 transition-colors text-lg"
-                          >
-                            {item.product.name}
-                          </Link>
-                          <p className="text-sm text-gray-600 mt-1">
-                            {item.product.category?.name}
-                          </p>
-                          {item.variant && (
+                // 🖼️ fallback image
+                const imageUrl =
+                  item.product.images?.[0]?.url ||
+                  "https://via.placeholder.com/200x200.png?text=No+Image";
+
+                return (
+                  <div
+                    key={`${item.product._id}-${item.variant?.size || "default"}`}
+                    className="bg-white/90 border border-amber-100 rounded-2xl p-6 shadow-sm hover:shadow-lg hover:border-amber-200 transition-all duration-300"
+                  >
+                    <div className="flex flex-col sm:flex-row gap-6">
+                      {/* Product Image */}
+                      <Link
+                        to={`/product/${item.product.slug}`}
+                        className="flex-shrink-0"
+                      >
+                        <img
+                          src={imageUrl}
+                          alt={item.product.name || "Product"}
+                          className="w-32 h-32 object-contain rounded-xl border border-amber-50 shadow-sm hover:scale-105 transition-transform duration-300 bg-black p-2"
+                        />
+                      </Link>
+
+                      {/* Product Details */}
+                      <div className="flex-1">
+                        <div className="flex justify-between items-start mb-2">
+                          <div>
+                            <Link
+                              to={`/product/${item.product.slug}`}
+                              className="font-semibold text-gray-900 hover:text-amber-700 transition-colors text-lg"
+                            >
+                              {item.product.name || "Unnamed Product"}
+                            </Link>
                             <p className="text-sm text-gray-600 mt-1">
-                              Size:{" "}
-                              <span className="font-semibold text-amber-700">
-                                {item.variant.size}
-                              </span>
+                              {item.product.category?.name || "Uncategorized"}
                             </p>
-                          )}
-                        </div>
-                        <button
-                          onClick={() => handleRemove(item)}
-                          className="text-red-500 hover:text-red-600 transition"
-                        >
-                          <FiTrash2 size={20} />
-                        </button>
-                      </div>
-
-                      {/* Price & Quantity */}
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-4">
-                        <div className="flex items-baseline space-x-2">
-                          <span className="text-2xl font-bold text-amber-800">
-                            ₹{price}
-                          </span>
-                          {price < originalPrice && (
-                            <span className="text-sm text-gray-400 line-through">
-                              ₹{originalPrice}
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Quantity */}
-                        <div className="flex items-center space-x-4 mt-4 sm:mt-0">
-                          <div className="flex items-center border border-amber-200 rounded-lg shadow-sm overflow-hidden">
-                            <button
-                              onClick={() =>
-                                handleQuantityChange(item, "decrement")
-                              }
-                              className="px-3 py-2 hover:bg-amber-50 transition disabled:opacity-40"
-                              disabled={item.quantity <= 1}
-                            >
-                              <FiMinus size={16} />
-                            </button>
-                            <span className="px-4 py-2 font-semibold text-gray-800">
-                              {item.quantity}
-                            </span>
-                            <button
-                              onClick={() =>
-                                handleQuantityChange(item, "increment")
-                              }
-                              className="px-3 py-2 hover:bg-amber-50 transition"
-                            >
-                              <FiPlus size={16} />
-                            </button>
+                            {item.variant && (
+                              <p className="text-sm text-gray-600 mt-1">
+                                Size:{" "}
+                                <span className="font-semibold text-amber-700">
+                                  {item.variant.size}
+                                </span>
+                              </p>
+                            )}
                           </div>
-                          <span className="font-semibold text-gray-900">
-                            ₹{price * item.quantity}
-                          </span>
+                          <button
+                            onClick={() => handleRemove(item)}
+                            className="text-red-500 hover:text-red-600 transition"
+                          >
+                            <FiTrash2 size={20}  className="cursor-pointer"/>
+                          </button>
+                        </div>
+
+                        {/* Price & Quantity */}
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-4">
+                          <div className="flex items-baseline space-x-2">
+                            <span className="text-2xl font-bold text-amber-800">
+                              ₹{price}
+                            </span>
+                            {price < originalPrice && (
+                              <span className="text-sm text-gray-400 line-through">
+                                ₹{originalPrice}
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Quantity */}
+                          <div className="flex items-center space-x-4 mt-4 sm:mt-0">
+                            <div className="flex items-center border border-amber-200 rounded-lg shadow-sm overflow-hidden">
+                              <button
+                                onClick={() =>
+                                  handleQuantityChange(item, "decrement")
+                                }
+                                className="px-3 py-2 hover:bg-amber-50 transition disabled:opacity-40"
+                                disabled={item.quantity <= 1}
+                              >
+                                <FiMinus size={16} className="cursor-pointer"/>
+                              </button>
+                              <span className="px-4 py-2 font-semibold text-gray-800">
+                                {item.quantity}
+                              </span>
+                              <button
+                                onClick={() =>
+                                  handleQuantityChange(item, "increment")
+                                }
+                                className="px-3 py-2 hover:bg-amber-50 transition"
+                              >
+                                <FiPlus size={16} className="cursor-pointer"/>
+                              </button>
+                            </div>
+                            <span className="font-semibold text-gray-900">
+                              ₹{price * item.quantity}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
 
             {/* Clear Cart */}
             <button

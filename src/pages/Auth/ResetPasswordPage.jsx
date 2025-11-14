@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import API from "../../config/api";
 import { toast } from "react-toastify";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/bg_logo.png";
 
 const ResetPasswordPage = () => {
   const { token } = useParams();
@@ -62,7 +62,7 @@ const ResetPasswordPage = () => {
           <img
             src={logo}
             alt="MZ Aromas Logo"
-            className="h-20 scale-[2.5] w-auto mx-auto mb-4 drop-shadow-md transition-transform hover:scale-105 duration-300"
+            className="h-8 w-auto mx-auto mb-4 drop-shadow-md transition-transform hover:scale-105 duration-300"
           />
           <h1 className="text-3xl font-display font-bold text-amber-800 mb-2">
             Reset Password

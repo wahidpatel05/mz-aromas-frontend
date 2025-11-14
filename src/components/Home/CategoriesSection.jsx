@@ -34,11 +34,12 @@ const CategoriesSection = () => {
   }, []);
 
   return (
-    <section
-      className={`relative py-24 bg-gradient-to-b from-amber-50 via-white to-amber-50 border-t border-amber-100 overflow-hidden transition-all duration-[1500ms] ease-out ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      }`}
-    >
+   <section
+  className={`relative py-24 bg-gradient-to-b from-[#FFF8E1] via-[#FFFDF7] to-[#FFF8E1] border-t border-amber-100 overflow-hidden transition-all duration-[1500ms] ease-out ${
+    visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+  }`}
+>
+
       {/* 🌸 Subtle Background Texture */}
       <div className="absolute inset-0 opacity-[0.04] bg-[url('/pattern.svg')] bg-cover bg-center"></div>
 

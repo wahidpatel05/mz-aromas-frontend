@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   FiSearch,
-  FiDroplet,
   FiShoppingCart,
   FiUser,
   FiHeart,
@@ -14,17 +13,9 @@ import {
   FiInstagram,
   FiMessageCircle,
 } from "react-icons/fi";
+import { GiFactory } from "react-icons/gi";
 import { logoutUser } from "../../store/slices/authSlice";
-import logo from "../../assets/logo.png";
-
-const categories = [
-  "Attar",
-  "Agarbatti",
-  "Soaps",
-  "Essential Oils",
-  "Dhoop",
-  "Gift Sets",
-];
+import logo from "../../assets/bg_logo.png";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,7 +33,6 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
-
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -55,6 +45,7 @@ const Navbar = () => {
     if (searchQuery.trim()) {
       navigate(`/products?keyword=${searchQuery}`);
       setSearchQuery("");
+      setIsMenuOpen(false);
     }
   };
 
@@ -117,11 +108,11 @@ const Navbar = () => {
           <img
             src={logo}
             alt="MZ Aromas Logo"
-            className="h-14 w-auto object-contain scale-[2.5] origin-center -my-2 transition-transform duration-300 group-hover:scale-[2.7]"
+            className="h-10 w-auto object-contain origin-center -my-2 transition-transform duration-300 group-hover:scale-[1.1]"
           />
         </Link>
 
-        {/* Search Bar */}
+        {/* Search Bar (Desktop) */}
         <form
           onSubmit={handleSearch}
           className="hidden md:flex flex-1 max-w-md mx-auto"
@@ -171,12 +162,12 @@ const Navbar = () => {
             )}
           </Link>
 
-          {/* User Dropdown */}
-          <div className="relative group">
+          {/* User Dropdown (Desktop) */}
+          <div className="relative group hidden md:block">
             <button className="text-gray-700 hover:text-amber-700 transition">
               <FiUser size={25} />
             </button>
-            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg py-1.5 shadow-xl z-[60] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform scale-95 group-hover:scale-100 origin-top-right text-sm font-sans">
+            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg py-1.5 shadow-xl z-[9999] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform scale-95 group-hover:scale-100 origin-top-right text-sm font-sans">
               {isAuthenticated ? (
                 <>
                   <Link
@@ -230,68 +221,138 @@ const Navbar = () => {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden text-gray-700 hover:text-amber-700 transition-transform duration-200"
           >
-            {isMenuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
+            {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
           </button>
         </div>
       </nav>
 
-      {/* 🌸 Centered Static Bar Below Search */}
+      {/* Centered Tagline Bar */}
       <div className="w-full bg-gradient-to-r from-amber-50 via-amber-100 to-amber-50 py-3 border-t border-amber-200 text-center">
-  <p className="text-sm sm:text-base font-semibold tracking-wide text-black uppercase flex items-center justify-center gap-2">
-    <FiDroplet className="text-amber-600 text-lg sm:text-xl" />
-    Manufacturers and Exporters of Perfume Oils, Industrial Fragrances, Attar Roll-On and Many More
-  </p>
+        <p className="text-sm sm:text-base font-semibold tracking-wide text-black uppercase flex items-center justify-center gap-2">
+          <GiFactory className="text-black text-3xl sm:text-xl" />
+          Manufacturers and Exporters of Perfume Oils, Industrial Fragrances,
+          Attar Roll-On and Many More
+        </p>
+      </div>
+
+      {/* Desktop Nav Links */}
+<div className="hidden md:flex justify-center border-t border-amber-100 bg-gradient-to-r from-amber-50 to-amber-100 py-2 text-[13px] tracking-[0.12em] uppercase font-bold text-gray-700">
+  <div className="flex items-center gap-10 text-[15px] font-display">
+    <Link to="/" className="hover:text-amber-700 transition">
+      Home
+    </Link>
+
+    {/* Products Dropdown */}
+    <div className="relative group">
+      <button className="hover:text-amber-700 transition flex items-center gap-1">
+        PRODUCTS
+      </button>
+
+      {/* Spacer for hover gap */}
+      <div className="absolute left-0 top-full h-3 w-full"></div>
+
+      {/* Dropdown Menu */}
+      <div
+        className="absolute left-0 top-full mt-3 w-56 bg-white border border-gray-200 rounded-lg shadow-lg py-2 
+         opacity-0 invisible scale-95 group-hover:opacity-100 group-hover:visible group-hover:scale-100 
+         transition-all duration-300 z-50"
+      >
+        {[
+          "Perfume Oil",
+          "Aroma Chemicals",
+          "Agarbatti",
+          "Bakhoor",
+          "Airfreshner",
+          "Roll On",
+        ].map((sub) => (
+          <Link
+            key={sub}
+            to={`/products?category=${sub.toLowerCase().replace(/\s+/g, "-")}`}
+            className="block px-5 py-2 text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition"
+          >
+            {sub}
+          </Link>
+        ))}
+      </div>
+    </div>
+
+    <Link to="/blog" className="hover:text-amber-700 transition">
+      Blog
+    </Link>
+    <Link to="/gallery" className="hover:text-amber-700 transition">
+      Gallery
+    </Link>
+    <Link to="/contact" className="hover:text-amber-700 transition">
+      Contact
+    </Link>
+  </div>
 </div>
 
 
-      {/* 🔗 Main Links Bar */}
-      <div className="hidden md:flex justify-center border-t border-amber-100 bg-gradient-to-r from-amber-50 to-amber-100 py-2 text-[13px] tracking-[0.12em] uppercase font-medium text-gray-700">
-        <div className="flex items-center gap-10 text-[15px] font-display">
-          <Link to="/" className="hover:text-amber-700 transition">
+      {/* 🌿 Mobile Dropdown Menu */}
+      <div
+        className={`md:hidden fixed top-[115px] left-0 w-full bg-gradient-to-b from-amber-50 to-amber-100 border-t border-amber-200 transition-all duration-500 ease-in-out z-[999] ${
+          isMenuOpen
+            ? "opacity-100 translate-y-0 pointer-events-auto"
+            : "opacity-0 -translate-y-5 pointer-events-none"
+        }`}
+      >
+        <div className="flex flex-col items-center gap-4 py-6 text-sm font-semibold text-gray-700 uppercase tracking-wide">
+          <Link
+            to="/"
+            onClick={() => setIsMenuOpen(false)}
+            className="hover:text-amber-700 transition"
+          >
             Home
           </Link>
-
-          {/* Products Dropdown */}
-          <div className="relative group">
-            <button className="hover:text-amber-700 transition flex items-center gap-1">
-              PRODUCTS
-            </button>
-
-            <div className="absolute left-0 top-full h-3 w-full"></div>
-
-            <div
-              className="absolute left-0 top-full mt-3 w-56 bg-white border border-gray-200 rounded-lg shadow-lg py-2 
-               opacity-0 invisible scale-95 group-hover:opacity-100 group-hover:visible group-hover:scale-100 
-               transition-all duration-300 z-50"
-            >
-              {[
-                "Perfume Oil",
-                "Aroma Chemicals",
-                "Agarbatti",
-                "Bakhoor",
-                "Airfreshner",
-                "Roll On",
-              ].map((sub) => (
-                <Link
-                  key={sub}
-                  to={`/products?category=${sub.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="block px-5 py-2 text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition"
-                >
-                  {sub}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <Link to="/blog" className="hover:text-amber-700 transition">
+          <Link
+            to="/products"
+            onClick={() => setIsMenuOpen(false)}
+            className="hover:text-amber-700 transition"
+          >
+            Products
+          </Link>
+          <Link
+            to="/blog"
+            onClick={() => setIsMenuOpen(false)}
+            className="hover:text-amber-700 transition"
+          >
             Blog
           </Link>
-          <Link to="/gallery" className="hover:text-amber-700 transition">
+          <Link
+            to="/gallery"
+            onClick={() => setIsMenuOpen(false)}
+            className="hover:text-amber-700 transition"
+          >
             Gallery
           </Link>
-          <Link to="/contact" className="hover:text-amber-700 transition">
+          <Link
+            to="/contact"
+            onClick={() => setIsMenuOpen(false)}
+            className="hover:text-amber-700 transition"
+          >
             Contact
           </Link>
+
+          {/* Search in mobile menu */}
+          <form
+            onSubmit={handleSearch}
+            className="w-[90%] flex mt-4 border border-amber-200 rounded-full overflow-hidden bg-white shadow-sm"
+          >
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="flex-1 px-4 py-2 bg-transparent text-gray-700 placeholder-gray-400 focus:outline-none text-sm"
+            />
+            <button
+              type="submit"
+              className="bg-gradient-to-r from-amber-400 to-yellow-600 text-white px-4 flex items-center justify-center"
+            >
+              <FiSearch size={18} />
+            </button>
+          </form>
         </div>
       </div>
     </header>

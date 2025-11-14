@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FiHeart, FiShoppingCart, FiStar } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,16 +14,20 @@ const ProductCard = ({ product }) => {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { items: wishlistItems } = useSelector((state) => state.wishlist);
 
-  const isInWishlist = wishlistItems.some(
-    (item) => item.product?._id === product._id
-  );
+  // ✅ Local state to instantly reflect wishlist change
+  const [localWish, setLocalWish] = useState(false);
+
+  // Sync with redux whenever wishlist updates
+  useEffect(() => {
+    const inWishlist = wishlistItems.some(
+      (item) => item.product?._id === product._id
+    );
+    setLocalWish(inWishlist);
+  }, [wishlistItems, product._id]);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-
-    if (product.variants && product.variants.length > 0) {
-      return;
-    }
+    if (product.variants && product.variants.length > 0) return;
 
     dispatch(
       addToCart({
@@ -42,7 +46,11 @@ const ProductCard = ({ product }) => {
       return;
     }
 
-    if (isInWishlist) {
+    // ✅ Instantly toggle visual feedback
+    setLocalWish((prev) => !prev);
+
+    // Trigger redux update
+    if (localWish) {
       dispatch(removeFromWishlist(product._id));
     } else {
       dispatch(addToWishlist(product._id));
@@ -70,11 +78,11 @@ const ProductCard = ({ product }) => {
     >
       <Link to={`/product/${product.slug}`} className="block">
         {/* 🖼️ Image Section */}
-        <div className="relative bg-amber-50 overflow-hidden">
+        <div className="relative bg-black overflow-hidden flex items-center justify-center rounded-t-2xl">
           <img
             src={product.images[0]?.url}
             alt={product.name}
-            className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+            className="w-full h-64 object-contain bg-black p-4 transform group-hover:scale-105 transition-transform duration-700 ease-out rounded-t-2xl"
           />
 
           {/* 🏷️ Discount Badge */}
@@ -87,16 +95,25 @@ const ProductCard = ({ product }) => {
           {/* 💛 Wishlist Button */}
           <button
             onClick={handleWishlist}
-            className={`absolute top-3 right-3 bg-white/90 p-2 rounded-full shadow-md hover:bg-amber-50 transition-all duration-300 ${
-              isInWishlist ? "text-amber-600" : "text-gray-600"
-            }`}
+            className={`absolute top-3 right-3 p-2 rounded-full shadow-md transition-all duration-300 
+              ${
+                localWish
+                  ? "bg-gradient-to-r from-amber-400 to-yellow-500 text-white animate-pulse shadow-amber-400/60"
+                  : "bg-white/90 text-gray-600 hover:bg-amber-50"
+              }`}
           >
-            <FiHeart size={20} fill={isInWishlist ? "currentColor" : "none"} />
+            <FiHeart
+              size={20}
+              className={`transition-transform duration-300 ${
+                localWish ? "scale-110" : "scale-100"
+              }`}
+              fill={localWish ? "currentColor" : "none"}
+            />
           </button>
 
           {/* 🛒 Quick Add to Cart */}
           <div
-            className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white/95 to-transparent 
+            className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent 
             opacity-0 translate-y-4 group-hover:translate-y-0 group-hover:opacity-100 
             p-4 transition-all duration-500 ease-out"
           >

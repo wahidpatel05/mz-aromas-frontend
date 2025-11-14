@@ -11,7 +11,7 @@ import {
 } from "react-icons/fi";
 import { registerUser } from "../../store/slices/authSlice";
 import { toast } from "react-toastify";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/bg_logo.png";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -96,7 +96,7 @@ const RegisterPage = () => {
             <img
               src={logo}
               alt="MZ Aromas Logo"
-              className="h-14 scale-[2.5] w-auto mx-auto drop-shadow-md transition-transform hover:scale-[2.5] duration-300"
+              className="h-8 w-auto mx-auto drop-shadow-md transition-transform hover:scale-[1.2] duration-300"
             />
           </Link>
           <h2 className="text-3xl font-display font-bold text-amber-800 mb-2">

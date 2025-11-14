@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import { loginUser } from "../../store/slices/authSlice";
-import logo from "../../assets/logo.png"; // 🟡 MZ Aromas Logo
+import logo from "../../assets/bg_logo.png"; 
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const LoginPage = () => {
             <img
               src={logo}
               alt="MZ Aromas Logo"
-              className="h-14 scale-[2.5] w-auto mx-auto drop-shadow-md transition-transform hover:scale-[2.5] duration-300"
+              className="h-8 w-auto mx-auto drop-shadow-md transition-transform hover:scale-[1.2] duration-300"
             />
           </Link>
           <h2 className="text-3xl font-display font-bold text-amber-800 mb-1">

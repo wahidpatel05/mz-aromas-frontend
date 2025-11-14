@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FiMail, FiArrowLeft } from "react-icons/fi";
 import API from "../../config/api";
 import { toast } from "react-toastify";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/bg_logo.png";
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
@@ -38,7 +38,7 @@ const ForgotPasswordPage = () => {
             <img
               src={logo}
               alt="MZ Aromas Logo"
-              className="h-14 scale-[2.5] w-auto mx-auto drop-shadow-md transition-transform hover:scale-[2.5] duration-300"
+              className="h-8 w-auto mx-auto drop-shadow-md transition-transform hover:scale-[1.2] duration-300"
             />
           </Link>
         </div>
