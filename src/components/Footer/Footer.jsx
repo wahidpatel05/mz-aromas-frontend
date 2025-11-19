@@ -44,7 +44,7 @@ const Footer = () => {
             </h4>
             <ul className="space-y-2">
               {[
-                { to: "/about", label: "About Us" },
+                { to: "/gallery", label: "About Us" },
                 { to: "/contact", label: "Contact Us" },
                 { to: "/shipping-policy", label: "Shipping Policy" },
                 { to: "/privacy-policy", label: "Privacy Policy" },

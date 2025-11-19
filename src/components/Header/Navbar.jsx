@@ -68,13 +68,13 @@ const Navbar = () => {
       <div className="border-b border-amber-100 py-1.5 text-[11px] sm:text-xs bg-gradient-to-r from-amber-50 via-amber-100 to-amber-50 text-gray-700 tracking-wide">
         <div className="max-w-7xl mx-auto px-4 flex flex-wrap justify-between items-center gap-2 sm:gap-4">
           <div className="flex items-center flex-wrap gap-4 sm:gap-6 font-sans">
-            <div className="flex items-center gap-1.5 hover:text-amber-700 transition">
-              <FiPhoneCall size={13} />
+            <div className="flex items-center gap-1.5 hover:text-amber-700 transition  ">
+              <FiPhoneCall size={13}  />
               <span>+91-882-882-2020</span>
             </div>
 
             <div className="flex items-center gap-1.5 hover:text-amber-700 transition">
-              <FiMail size={13} />
+              <FiMail size={13}  />
               <span>info@mzaromas.com</span>
             </div>
 
@@ -127,7 +127,7 @@ const Navbar = () => {
             />
             <button
               type="submit"
-              className="bg-gradient-to-r from-amber-400 to-yellow-600 text-white px-4 flex items-center justify-center hover:opacity-90 transition"
+              className="bg-linear-to-r from-amber-400 to-yellow-600 text-white px-4 flex items-center justify-center hover:opacity-90 transition"
             >
               <FiSearch size={20} />
             </button>
@@ -227,7 +227,7 @@ const Navbar = () => {
       </nav>
 
       {/* Centered Tagline Bar */}
-      <div className="w-full bg-gradient-to-r from-amber-50 via-amber-100 to-amber-50 py-3 border-t border-amber-200 text-center">
+      <div className="w-full bg-gradient-to-r from-amber-100 via-amber-150 to-amber-100 py-3 border-t border-amber-200 text-center">
         <p className="text-sm sm:text-base font-semibold tracking-wide text-black uppercase flex items-center justify-center gap-2">
           <GiFactory className="text-black text-3xl sm:text-xl" />
           Manufacturers and Exporters of Perfume Oils, Industrial Fragrances,
@@ -236,7 +236,7 @@ const Navbar = () => {
       </div>
 
       {/* Desktop Nav Links */}
-<div className="hidden md:flex justify-center border-t border-amber-100 bg-gradient-to-r from-amber-50 to-amber-100 py-2 text-[13px] tracking-[0.12em] uppercase font-bold text-gray-700">
+<div className="hidden md:flex justify-center border-t border-amber-100 bg-gradient-to-r from-amber-100 via-amber-150 to-amber-100 py-2 text-[13px] tracking-[0.12em] uppercase font-bold text-gray-700">
   <div className="flex items-center gap-10 text-[15px] font-display">
     <Link to="/" className="hover:text-amber-700 transition">
       Home
@@ -280,7 +280,7 @@ const Navbar = () => {
       Blog
     </Link>
     <Link to="/gallery" className="hover:text-amber-700 transition">
-      Gallery
+      About Us
     </Link>
     <Link to="/contact" className="hover:text-amber-700 transition">
       Contact

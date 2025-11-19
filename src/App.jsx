@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 // Components
 import Navbar from "./components/Header/Navbar";
 import Footer from "./components/Footer/Footer";
+
 import ProtectedRoute from "./components/Route/ProtectedRoute";
 
 // Public Pages
@@ -112,6 +113,7 @@ function App() {
                   <Route path="/blog" element={<BlogPage />} />
                   <Route path="/blog/:id" element={<BlogDetailPage />} />
                   <Route path="/gallery" element={<GalleryPage />} />
+                  
 
 
                   {/* Auth Routes */}

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { ChevronDown } from "lucide-react";
+
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
 import {
@@ -9,10 +11,9 @@ import {
   FiGift,
 } from "react-icons/fi";
 import { BsFlower1, BsGem } from "react-icons/bs";
+
 import hero2 from "../../assets/hero2.jpg";
-// import hero3 from "../../assets/hero3.jpg";
 import hero4 from "../../assets/hero4.jpg";
-import hero5 from "../../assets/mz.png";
 import hero6 from "../../assets/mz.jpeg";
 
 import "swiper/css";
@@ -29,11 +30,12 @@ const HeroSection = () => {
 
   const slides = [
     {
-      title: "Pure Natural Attars",
-      desc: "Experience the authentic essence of traditional Indian perfumery.",
-      btn: "Shop Attars",
-      link: "/products?category=attar",
+      title: "",
+      desc: "",
+      btn: "",
+      link: "#featured-products",
       image: hero6,
+      showScroll: true,
     },
     {
       title: "Premium Agarbatti",
@@ -41,6 +43,7 @@ const HeroSection = () => {
       btn: "Explore Collection",
       link: "/products?category=agarbatti",
       image: hero2,
+      showScroll: false,
     },
     {
       title: "Luxurious Gift Sets",
@@ -48,34 +51,17 @@ const HeroSection = () => {
       btn: "View Gift Sets",
       link: "/products?category=gift-sets",
       image: hero4,
+      showScroll: false,
     },
   ];
 
   const marqueeItems = [
-    {
-      icon: <FiTruck className="text-amber-700" />,
-      text: "Shipping All Across Worldwide",
-    },
-    {
-      icon: <FiDroplet className="text-amber-700" />,
-      text: "100% Natural & Alcohol-Free Fragrances",
-    },
-    {
-      icon: <FiHeart className="text-amber-700" />,
-      text: "Handcrafted with Love – Only at MZ Aromas",
-    },
-    {
-      icon: <BsGem className="text-amber-700" />,
-      text: "Authentic. Long-Lasting. Luxurious.",
-    },
-    {
-      icon: <BsFlower1 className="text-amber-700" />,
-      text: "Discover the Essence of True Indian Perfumery",
-    },
-    {
-      icon: <FiGift className="text-amber-700" />,
-      text: "Exclusive Seasonal Discounts on Gift Sets",
-    },
+    { icon: <FiTruck className="text-amber-700" />, text: "Shipping All Across Worldwide" },
+    { icon: <FiDroplet className="text-amber-700" />, text: "100% Natural & Alcohol-Free Fragrances" },
+    { icon: <FiHeart className="text-amber-700" />, text: "Handcrafted with Love – Only at MZ Aromas" },
+    { icon: <BsGem className="text-amber-700" />, text: "Authentic. Long-Lasting. Luxurious." },
+    { icon: <BsFlower1 className="text-amber-700" />, text: "Discover the Essence of True Indian Perfumery" },
+    { icon: <FiGift className="text-amber-700" />, text: "Exclusive Seasonal Discounts on Gift Sets" },
   ];
 
   return (
@@ -88,10 +74,7 @@ const HeroSection = () => {
       <div className="w-full bg-gradient-to-r from-[#FFF8E1] via-[#FFFDF7] to-[#FFF8E1] text-amber-800 py-3 text-xs sm:text-sm border-b border-amber-200 relative overflow-hidden font-medium tracking-wide uppercase">
         <div className="marquee-track flex whitespace-nowrap items-center gap-10">
           {marqueeItems.map((item, idx) => (
-            <span
-              key={idx}
-              className="flex items-center gap-2 mx-8 text-[13px] sm:text-sm"
-            >
+            <span key={idx} className="flex items-center gap-2 mx-8 text-[13px] sm:text-sm">
               {item.icon}
               {item.text}
             </span>
@@ -103,7 +86,7 @@ const HeroSection = () => {
       <Swiper
         modules={[Autoplay, Pagination, Navigation]}
         slidesPerView={1}
-        autoplay={{ delay: 5500, disableOnInteraction: false }}
+        autoplay={{ delay: 10000, disableOnInteraction: false }}
         pagination={{ clickable: true }}
         navigation
         className="heroSwiper h-[500px] md:h-[600px] rounded-2xl overflow-hidden shadow-2xl border border-amber-100"
@@ -111,39 +94,84 @@ const HeroSection = () => {
         {slides.map((slide, i) => (
           <SwiperSlide key={i}>
             <div
-              className="relative h-full flex items-center justify-start"
+              className="relative h-full flex items-center justify-center"
               style={{
-                backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.55), rgba(0,0,0,0.15)), url(${slide.image})`,
+                backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.40), rgba(0,0,0,0.20)), url(${slide.image})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
             >
-              {/* Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
+              {/* Overlay - reduced blur now */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-transparent"></div>
 
               {/* Content */}
               <div className="relative z-10 container mx-auto px-6 md:px-12">
                 <div
-                  className="max-w-xl space-y-6 text-white animate-fadeInUp"
+                  className={`max-w-xl text-white animate-fadeInUp ${
+                    slide.showScroll
+                      ? "flex flex-col items-center justify-center text-center pt-40"
+                      : "space-y-6"
+                  }`}
                   style={{ animationDelay: "0.3s" }}
                 >
-                  <h1 className="font-display text-4xl md:text-6xl font-semibold leading-tight text-white drop-shadow-[0_6px_20px_rgba(0,0,0,0.6)] tracking-wide">
-                    {slide.title}
-                  </h1>
-                  <p className="font-sans text-base md:text-lg text-gray-200/90 max-w-md leading-relaxed tracking-wide">
-                    {slide.desc}
-                  </p>
+                  {/* Normal Slides */}
+                  {!slide.showScroll && (
+                    <>
+                      <h1 className="font-display text-4xl md:text-6xl font-semibold leading-tight drop-shadow-[0_6px_20px_rgba(0,0,0,0.6)]">
+                        {slide.title}
+                      </h1>
 
-                  <Link
-                    to={slide.link}
-                    className="inline-block bg-gradient-to-r from-amber-400 to-yellow-600 hover:from-amber-500 hover:to-yellow-700 text-white px-8 py-3 rounded-full font-sans font-semibold shadow-lg shadow-amber-800/30 hover:shadow-amber-700/50 transition-all duration-300 hover:scale-[1.05]"
-                  >
-                    {slide.btn}
-                  </Link>
+                      <p className="font-sans text-base md:text-lg text-gray-200/90 max-w-md">
+                        {slide.desc}
+                      </p>
+
+                      <Link
+                        to={slide.link}
+                        className="inline-block bg-gradient-to-r from-amber-400 to-yellow-600 hover:from-amber-500 hover:to-yellow-700 text-white px-8 py-3 rounded-full font-sans font-semibold shadow-lg shadow-amber-800/30 hover:shadow-amber-700/50 transition-all duration-300 hover:scale-[1.05]"
+                      >
+                        {slide.btn}
+                      </Link>
+                    </>
+                  )}
+
+                  {/* FIRST SLIDE – Explore More Button */}
+                  {slide.showScroll && (
+                    <div className="pt-10 mt-40 -ml-100">
+                      <a
+                        href="#featured-products"
+                        className="
+                          group inline-flex items-center gap-3 px-5 py-3
+                          rounded-full backdrop-blur-md
+                          bg-white/10 border border-amber-400/40
+                          shadow-[0_4px_20px_rgba(255,200,0,0.25)]
+                          hover:shadow-[0_6px_28px_rgba(255,200,0,0.45)]
+                          transition-all duration-300
+                        "
+                      >
+                        <ChevronDown
+                          className="
+                            w-6 h-6 text-amber-300
+                            drop-shadow-[0_0_8px_rgba(255,200,0,0.6)]
+                            transition-all duration-300
+                            group-hover:translate-y-0.5
+                          "
+                        />
+
+                        <span
+                          className="
+                            text-amber-300 font-semibold text-lg tracking-wider
+                            drop-shadow-[0_0_8px_rgba(255,200,0,0.5)]
+                          "
+                        >
+                          Explore More
+                        </span>
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* Bottom Fade */}
+              {/* Fade bottom */}
               <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-black/40 to-transparent"></div>
             </div>
           </SwiperSlide>
@@ -153,7 +181,6 @@ const HeroSection = () => {
       {/* 🎨 Custom Styling */}
       <style>
         {`
-          /* Marquee Animation */
           .marquee-track {
             animation: marqueePingPong 18s ease-in-out infinite alternate;
           }
@@ -162,46 +189,6 @@ const HeroSection = () => {
             50% { transform: translateX(-50%); }
             100% { transform: translateX(0); }
           }
-
-          /* Swiper Pagination */
-          .heroSwiper .swiper-pagination-bullet {
-            background-color: rgba(255, 191, 0, 0.4);
-            opacity: 1;
-            width: 10px;
-            height: 10px;
-            transition: all 0.3s ease;
-          }
-          .heroSwiper .swiper-pagination-bullet-active {
-            background: linear-gradient(to right, #f59e0b, #facc15);
-            transform: scale(1.25);
-            box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
-          }
-
-          /* Swiper Arrows */
-          .heroSwiper .swiper-button-prev,
-          .heroSwiper .swiper-button-next {
-            color: #fbbf24;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 50%;
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-          }
-          .heroSwiper .swiper-button-prev:hover,
-          .heroSwiper .swiper-button-next:hover {
-            background: rgba(0, 0, 0, 0.6);
-            color: #fcd34d;
-            transform: scale(1.1);
-          }
-          .heroSwiper .swiper-button-prev { left: 24px; }
-          .heroSwiper .swiper-button-next { right: 24px; }
-
-          .heroSwiper .swiper-pagination { bottom: 16px !important; }
-
-          /* FadeInUp */
           @keyframes fadeInUp {
             0% { opacity: 0; transform: translateY(40px); }
             100% { opacity: 1; transform: translateY(0); }

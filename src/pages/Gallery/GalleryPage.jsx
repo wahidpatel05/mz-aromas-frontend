@@ -1,19 +1,9 @@
 import React, { useEffect, useState } from "react";
-
-const galleryImages = [
-  { id: 1, url: "/gallery/img1.jpg", title: "Premium Attar Collection" },
-  { id: 2, url: "/gallery/img2.jpg", title: "Agarbatti Manufacturing" },
-  { id: 3, url: "/gallery/img3.jpg", title: "Perfume Oil Extraction" },
-  { id: 4, url: "/gallery/img4.jpg", title: "Gift Set Packaging" },
-  { id: 5, url: "/gallery/img5.jpg", title: "Raw Material Selection" },
-  { id: 6, url: "/gallery/img6.jpg", title: "MZ Aromas Showroom" },
-  { id: 7, url: "/gallery/img7.jpg", title: "Fragrance Testing Lab" },
-  { id: 8, url: "/gallery/img8.jpg", title: "Attar Roll-On Production" },
-];
+import { FiDroplet, FiFeather, FiStar, FiArrowRight } from "react-icons/fi";
+import mz from "../../assets/mz.jpeg";
 
 const GalleryPage = () => {
   const [visible, setVisible] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setVisible(true), 150);
@@ -26,59 +16,96 @@ const GalleryPage = () => {
         visible ? "opacity-100" : "opacity-0"
       }`}
     >
-      {/* Heading */}
-      <div className="text-center mb-16 px-6">
-        <h1 className="text-4xl md:text-5xl font-display font-bold text-amber-800">
-          Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-yellow-600">Gallery</span>
+      {/* Header */}
+      <section className="text-center mb-16 px-6">
+        <h1 className="text-4xl md:text-5xl font-display font-bold text-amber-800 mb-4">
+          About{" "}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-yellow-600">
+            MZ Aromas
+          </span>
         </h1>
-        <p className="max-w-2xl mx-auto text-gray-700 mt-4 text-lg">
-          A glimpse into the world of authentic fragrances, craftsmanship, and luxury at MZ Aromas.
+        <p className="max-w-3xl mx-auto text-gray-700 text-lg leading-relaxed">
+          Crafting fragrances that tell stories. Bridging tradition and innovation, MZ Aromas brings you globally-inspired perfume oils, attars, agarbatti, and industrial fragrances rooted in purity and excellence.
         </p>
-      </div>
+      </section>
 
-      {/* Gallery Grid */}
-      <div className="container mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-6">
-        {galleryImages.map((img, index) => (
-          <div
-            key={img.id}
-            style={{
-              animation: "fadeUp 0.9s ease forwards",
-              animationDelay: `${(index + 1) * 0.15}s`,
-            }}
-            className="opacity-0 group relative overflow-hidden rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-500 cursor-pointer"
-            onClick={() => setSelectedImage(img)}
-          >
-            <img
-              src={img.url}
-              alt={img.title}
-              className="w-full h-48 md:h-56 object-cover transition-transform duration-500 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-            <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white font-semibold text-sm opacity-0 group-hover:opacity-100 transition-all duration-500">
-              {img.title}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      {/* Full Screen Image Modal */}
-      {selectedImage && (
-        <div
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center z-[2000] animate-fadeIn"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div className="relative max-w-4xl w-[90%]">
-            <img
-              src={selectedImage.url}
-              alt={selectedImage.title}
-              className="w-full rounded-2xl shadow-2xl"
-            />
-            <p className="text-center text-white mt-4 text-lg font-semibold">
-              {selectedImage.title}
-            </p>
-          </div>
+      {/* Our Story Section */}
+      <section className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-24">
+        <div className="space-y-6">
+          <h2 className="text-3xl font-display font-bold text-amber-800">
+            Our Journey
+          </h2>
+          <p className="text-gray-700 leading-relaxed">
+            MZ Aromas began with a simple mission to redefine luxury through authentic, long-lasting fragrances*.  
+            What started as a small fragrance house has grown into a globally recognized name in perfume oils, industrial formulations, incense products, and more.
+          </p>
+          <p className="text-gray-700 leading-relaxed">
+            With decades of experience, our artisans blend ancient perfumery techniques with modern innovations, ensuring every drop reflects purity, consistency, and elegance.
+          </p>
         </div>
-      )}
+
+        <div className="rounded-2xl overflow-hidden shadow-xl">
+          <img
+            src={mz}
+            alt="MZ Aromas Story"
+            className="w-full h-[350px] object-cover"
+          />
+        </div>
+      </section>
+
+      {/* Why Choose Us */}
+      <section className="py-16 bg-gradient-to-r from-amber-100 via-white to-amber-100 border-y border-amber-200">
+        <h2 className="text-3xl font-display text-center font-bold text-amber-800 mb-12">
+          Why Choose MZ Aromas?
+        </h2>
+
+        <div className="container mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+          {[ 
+            {
+              icon: <FiDroplet size={38} className="text-amber-700" />,
+              title: "Premium Ingredients",
+              desc: "Handpicked raw materials sourced from trusted distillers and global suppliers.",
+            },
+            {
+              icon: <FiFeather size={38} className="text-amber-700" />,
+              title: "Authentic Craftsmanship",
+              desc: "Traditional attar-making blended with modern extraction techniques.",
+            },
+            {
+              icon: <FiStar size={38} className="text-amber-700" />,
+              title: "ISO Certified Quality",
+              desc: "Every product undergoes thorough quality checks for purity and consistency.",
+            },
+            {
+              icon: <FiArrowRight size={38} className="text-amber-700" />,
+              title: "Global Reach",
+              desc: "Supplying fragrances and incense products across more than 20+ countries.",
+            },
+          ].map((item, i) => (
+            <div
+              key={i}
+              className="bg-white p-8 rounded-2xl border border-amber-100 shadow-sm hover:shadow-lg hover:-translate-y-2 transition-all text-center"
+            >
+              <div className="flex justify-center mb-5">{item.icon}</div>
+              <h3 className="text-xl font-display font-semibold text-amber-800 mb-2">
+                {item.title}
+              </h3>
+              <p className="text-gray-700 text-sm leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Our Mission */}
+      <section className="container mx-auto px-6 mt-20 text-center max-w-3xl">
+        <h2 className="text-3xl font-display font-bold text-amber-800 mb-6">
+          Our Mission
+        </h2>
+        <p className="text-gray-700 text-lg leading-relaxed">
+          To bring the essence of nature, luxury, and craftsmanship into every fragrance.  
+          We aim to make premium aromatic experiences accessible worldwide — without compromising on quality, authenticity, or purity.
+        </p>
+      </section>
 
       {/* Animation */}
       <style>{`
