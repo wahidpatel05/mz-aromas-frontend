@@ -82,7 +82,7 @@ const ProductCard = ({ product }) => {
           <img
             src={product.images[0]?.url}
             alt={product.name}
-            className="w-full h-64 object-contain bg-black p-4 transform group-hover:scale-105 transition-transform duration-700 ease-out rounded-t-2xl"
+            className="w-full h-65 object-contain bg-black p-4 transform group-hover:scale-105 transition-transform duration-700 ease-out rounded-t-2xl"
           />
 
           {/* 🏷️ Discount Badge */}
@@ -137,11 +137,11 @@ const ProductCard = ({ product }) => {
             {product.category?.name}
           </p>
 
-          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 h-12 leading-snug group-hover:text-amber-700 transition-colors duration-300">
+          <h3 className="font-semibold text-gray-900  line-clamp-2 h-12 leading-snug group-hover:text-amber-700 transition-colors duration-300">
             {product.name}
           </h3>
 
-          <div className="flex items-center space-x-2 mb-2">
+          {/* <div className="flex items-center space-x-2 mb-2">
             <FiStar className="text-yellow-400 fill-yellow-400" size={16} />
             <span className="text-sm font-medium text-gray-700">
               {product.ratings?.toFixed(1) || "0.0"}
@@ -149,15 +149,15 @@ const ProductCard = ({ product }) => {
             <span className="text-xs text-gray-400">
               ({product.numOfReviews || 0})
             </span>
-          </div>
+          </div> */}
 
           <div className="flex items-baseline gap-2">
             <span className="text-xl font-bold text-gray-900">
-              ₹{displayPrice}
+              ₹{displayPrice}/kg
             </span>
             {discount > 0 && (
               <span className="text-sm text-gray-400 line-through">
-                ₹{originalPrice}
+                ₹{originalPrice} 
               </span>
             )}
           </div>

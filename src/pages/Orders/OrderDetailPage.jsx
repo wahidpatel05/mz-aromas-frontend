@@ -118,10 +118,10 @@ const OrderDetailPage = () => {
   <div className="mt-10 flex flex-col items-center justify-center">
     <div className="relative flex items-center justify-between w-full max-w-2xl mx-auto">
 
-      {/* Background Line (full width between circles) */}
+      {/* Background Line */}
       <div className="absolute top-1/2 left-0 right-0 h-[4px] bg-gray-200 rounded-full transform -translate-y-1/2 z-0" />
 
-      {/* Progress Fill Line (animated fill between circles) */}
+      {/* Fill Line */}
       <div
         className="absolute top-1/2 left-0 h-[4px] bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full transform -translate-y-1/2 transition-all duration-700 ease-out z-0"
         style={{
@@ -143,7 +143,6 @@ const OrderDetailPage = () => {
           key={step.name}
           className="flex flex-col items-center flex-1 relative z-10"
         >
-          {/* Circle (sits on top of line) */}
           <div
             className={`flex items-center justify-center w-12 h-12 rounded-full border-2 text-base font-semibold transition-all duration-300 ${
               step.completed
@@ -154,7 +153,6 @@ const OrderDetailPage = () => {
             {step.completed ? "✓" : index + 1}
           </div>
 
-          {/* Label */}
           <p
             className={` text-sm font-medium ${
               step.completed ? "text-amber-700" : "text-gray-500"
@@ -165,8 +163,42 @@ const OrderDetailPage = () => {
         </div>
       ))}
     </div>
+
+    {/* ⭐ BIG TRACKING ID BOX UNDER PROGRESS BAR */}
+    <div className="mt-10 w-full max-w-2xl bg-white border border-amber-200 rounded-xl shadow-md p-6 text-center">
+      
+      <h3 className="text-lg font-semibold text-amber-900 mb-2">
+        Tracking Information
+      </h3>
+
+      {order.trackingId ? (
+        <div>
+          <p className="text-lg text-amber-700 font-bold mb-2 ">
+          Courier: {order.courierName || "Not provided"}
+          </p>
+          <p className="text-gray-800 font-mono text-lg bg-amber-50 px-4 py-3 rounded-lg border border-amber-200 inline-block">
+            {order.trackingId}
+          </p>
+
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(order.trackingId);
+              toast.success("Tracking ID copied");
+            }}
+            className="mt-3 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-sm"
+          >
+            Copy Tracking ID
+          </button>
+        </div>
+      ) : (
+        <p className="text-gray-500 text-lg font-semibold">Tracking ID will be available once your order has been shipped <br />
+        If you have any quries, whatsapp us at <span className="font-extrabold text-black">+91-882-882-2020</span> 
+      .</p>
+      )}
+    </div>
   </div>
 )}
+
 
         </div>
 
@@ -302,6 +334,46 @@ const OrderDetailPage = () => {
                     ₹{order.totalPrice}
                   </span>
                 </div>
+
+                {/* ⭐ Tracking ID display (customer) */}
+                {/* ⭐ Tracking Information (Customer View) */}
+<div className="mt-4 border-t pt-4">
+  <h3 className="text-sm font-medium text-gray-700 mb-2">
+    Tracking Information
+  </h3>
+
+  {order.trackingId ? (
+    <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+      {/* Courier Name */}
+      <p className="text-sm text-amber-800 mb-1">
+        <span className="font-semibold">Courier:</span>{" "}
+        {order.courierName || "Not provided"}
+      </p>
+
+      {/* Tracking ID */}
+      <div className="flex items-center justify-between">
+        <p className="font-mono text-sm text-gray-900">
+          {order.trackingId}
+        </p>
+
+        <button
+          onClick={() => {
+            navigator.clipboard.writeText(order.trackingId);
+            toast.success("Tracking ID copied!");
+          }}
+          className="text-sm bg-amber-100 hover:bg-amber-200 px-3 py-1 rounded-md"
+        >
+          Copy
+        </button>
+      </div>
+    </div>
+  ) : (
+    <p className="text-sm text-gray-500">
+      Tracking details not available yet.
+    </p>
+  )}
+</div>
+
               </div>
 
               <button className="w-full bg-gradient-to-r from-amber-400 to-yellow-600 hover:from-amber-500 hover:to-yellow-700 text-white py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">

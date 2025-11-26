@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import attarImg from "../../assets/Categories/attar.jpg";
-import agarbattiImg from "../../assets/Categories/Agarbatti.jpg";
+import attarImg from "../../assets/Categories/attar.jpeg";
+import agarbattiImg from "../../assets/Categories/Agarbatti.jpeg";
 import aromaChemicalsImg from "../../assets/Categories/aromachemicals.jpg";
 import dhoopImg from "../../assets/Categories/dhoop.jpg";
 import giftSetImg from "../../assets/Categories/giftsets.jpg";
-import oilImg from "../../assets/Categories/oil.jpg";
+import oilImg from "../../assets/Categories/oil.jpeg";
 import soapImg from "../../assets/Categories/soap.jpg";
 import roomFreshnerImg from "../../assets/Categories/roomfreshner.jpg";
 import scentedCandlesImg from "../../assets/Categories/scentedcandles.jpg";
+import bakhoor from "../../assets/Categories/bakhoor.jpeg";
+import perfumeoil from "../../assets/Categories/oil.jpeg";
 
 const categoryImages = {
   attar: attarImg,
@@ -22,6 +24,8 @@ const categoryImages = {
   soap: soapImg,
   "room freshner": roomFreshnerImg,
   "scented candles": scentedCandlesImg,
+  "bakhoor": bakhoor,
+  "perfume oils": perfumeoil,
 };
 
 const CategoriesSection = () => {
@@ -41,7 +45,7 @@ const CategoriesSection = () => {
 >
 
       {/* 🌸 Subtle Background Texture */}
-      <div className="absolute inset-0 opacity-[0.04] bg-[url('/pattern.svg')] bg-cover bg-center"></div>
+      <div className="absolute inset-0 opacity-[0.04] bg-[url('/pattern.svg')] bg-cover bg-center "></div>
 
       <div className="relative z-10 container mx-auto px-6 text-center">
         {/* 🕯️ Heading */}
@@ -66,7 +70,10 @@ const CategoriesSection = () => {
         </p>
 
         {/* 🪔 Categories Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 md:gap-10">
+       <div className="grid gap-8 md:gap-10 justify-center"
+     style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+
+
           {categories.slice(0, 10).map((category, index) => {
             const name = category.name.toLowerCase().trim();
             const image = categoryImages[name] || categoryImages["attar"];

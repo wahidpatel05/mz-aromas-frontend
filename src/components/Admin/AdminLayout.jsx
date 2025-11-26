@@ -14,7 +14,7 @@ import {
   FiLogOut,
 } from "react-icons/fi";
 import { logoutUser } from "../../store/slices/authSlice";
-import logo from "../../assets/bg_logo.png"; // 
+import logo from "../../assets/bg_logo.png";
 
 const AdminLayout = () => {
   const location = useLocation();
@@ -42,10 +42,11 @@ const AdminLayout = () => {
       <div className="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-50 shadow-sm">
         <Link to="/" className="flex items-center space-x-2">
           <img
-  src={logo}
-  alt="MZ Aromas Logo"
-  className="h-8 w-auto object-contain "
-/>
+            src={logo}
+            alt="MZ Aromas Logo"
+            className="h-12 w-auto object-contain"
+          />
+
 
           <span className="text-lg font-display font-semibold text-amber-700 tracking-wide">
             Admin
@@ -74,7 +75,7 @@ const AdminLayout = () => {
               <img
                 src={logo}
                 alt="MZ Aromas Logo"
-                className="h-12 scale-[2.3] w-auto object-contain"
+                className="h-12 - w-auto object-contain"
               />
               <p className="text-sm text-gray-500 font-medium">Admin Panel</p>
             </Link>

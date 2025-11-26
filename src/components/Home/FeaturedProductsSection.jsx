@@ -16,12 +16,12 @@ const FeaturedProductsSection = () => {
     <section
     id="featured-products"
   className={`relative py-24 bg-gradient-to-b from-[#FFF8E1] via-[#FFFDF7] to-[#FFF8E1] border-t border-amber-100 overflow-hidden transition-all duration-[1500ms] ease-out ${
-    visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+    visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
   }`}
 >
 
       {/* ✨ Subtle Background Pattern */}
-      <div className="absolute inset-0 opacity-[0.04] bg-[url('/pattern.svg')] bg-cover bg-center"></div>
+      <div className="absolute inset-0 opacity-[0.04] bg-[url('/pattern.svg')] bg-cover bg-center "></div>
 
       <div className="relative z-10 container mx-auto px-6">
         {/* 🕯️ Header */}
@@ -33,11 +33,11 @@ const FeaturedProductsSection = () => {
           <div>
             <h2 className="font-display text-4xl md:text-5xl font-semibold mb-3 text-amber-800 tracking-wide leading-snug">
               Featured{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-yellow-600">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-amber-500 to-yellow-600">
                 Products
               </span>
             </h2>
-            <p className="font-sans text-gray-700 text-lg leading-relaxed max-w-md">
+            <p className="font-sans text-gray-700 text-lg font-semibold leading-relaxed max-w-zl">
               Handpicked bestsellers, crafted to awaken your senses and refine your aura.
             </p>
           </div>

@@ -13,10 +13,11 @@ const Footer = () => {
 
   return (
     <footer
-      className={`relative bg-gradient-to-b from-amber-50 via-white to-amber-100 border-t border-amber-100 text-gray-700 transition-all duration-[1200ms] ease-out ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      }`}
-    >
+  className={`relative bg-gradient-to-b from-white via-amber-50 to-amber-100 border-t border-amber-100 text-gray-700 transition-all duration-[1200ms] ease-out ${
+    visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+  }`}
+>
+
       {/* 🌿 Main Footer */}
       <div className="relative container mx-auto px-6 py-14 z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-20 text-left ">
@@ -26,14 +27,14 @@ const Footer = () => {
             <img
               src={logo}
               alt="MZ Aromas"
-              className="h-8 w-auto object-contain mb-4 "
+              className="h-10 w-auto object-contain mb-4 "
             />
-            <p className="text-gray-700 text-sm leading-relaxed">
+            <p className="text-gray-700 text-sm leading-relaxed font-semibold">
               <span className="font-semibold text-amber-800">Address:</span> <br />
-              3RD FLOOR, IVY CENTRE, UNIT NO. 312,<br />
-              Next to IRIS PARK,<br />
-              Jogeshwari West, Mumbai,<br />
-              Maharashtra 400102
+              Unit no. 312, 3rd Floor, Ivy Centre,<br />
+              Next to Iris Park,<br />
+              Jogeshwari West, Mumbai 400102,<br />
+              Maharashtra
             </p>
           </div>
 
@@ -46,9 +47,9 @@ const Footer = () => {
               {[
                 { to: "/gallery", label: "About Us" },
                 { to: "/contact", label: "Contact Us" },
-                { to: "/shipping-policy", label: "Shipping Policy" },
-                { to: "/privacy-policy", label: "Privacy Policy" },
-                { to: "/bulk-order", label: "Bulk Orders" },
+                // { to: "/shipping-policy", label: "Shipping Policy" },
+                { to: "/products", label: "Products" },
+                { to: "/contact", label: "Bulk Orders" },
               ].map(({ to, label }) => (
                 <li key={to}>
                   <Link
@@ -70,21 +71,37 @@ const Footer = () => {
             <ul className="space-y-3 text-gray-700">
               <li className="flex items-center space-x-3">
                 <FiPhone className="text-amber-600" />
+                <a
+                  href="https://wa.me/918828822020"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-1.5 hover:text-amber-700 transition"
+                  >
                 <span>+91-882-882-2020</span>
+                </a>
               </li>
               <li className="flex items-center space-x-3">
                 <FiMail className="text-amber-600" />
-                <span>info@mzaromas.com</span>
+
+                  <a
+                    href="mailto:info@mzaromas.com"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-1.5 hover:text-amber-700 transition"
+                  >
+                    <span>info@mzaromas.com</span>
+                  </a>
+
               </li>
               <li className="flex items-center space-x-3">
                 <FiInstagram className="text-amber-600" />
                 <a
-                  href="https://instagram.com/mz.aromas"
+                  href="https://instagram.com/mz_aromas"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-amber-600 transition-colors"
                 >
-                  @mz.aromas
+                  @mz_aromas
                 </a>
               </li>
             </ul>

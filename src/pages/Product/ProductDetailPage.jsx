@@ -58,6 +58,7 @@ const ProductDetailPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
   const [isInCart, setIsInCart] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
 
   // -----------------------
   // initial fetch / setup
@@ -321,6 +322,45 @@ const ProductDetailPage = () => {
               <h1 className="text-4xl font-display font-bold text-amber-900 mb-4">
                 {product.name}
               </h1>
+            {/* Category, Subcategory, Fragrance & Intensity */}
+            <div className="mb-4 space-y-3">
+
+              {/* Category & Subcategory */}
+              {/* <div className="flex flex-wrap items-center gap-4 text-sm text-gray-700">
+                
+                <span className="font-semibold text-amber-800">Category:</span>
+                <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full">
+                  {product.category?.name || product.category || "N/A"}
+                </span>
+
+                {product.subcategory && (
+                  <>
+                    <span className="font-semibold text-amber-800">Subcategory:</span>
+                    <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">
+                      {product.subcategory}
+                    </span>
+                  </>
+                )}
+              </div> */}
+
+              {/* Fragrance Type & Intensity */}
+              {/* <div className="flex flex-wrap items-center gap-4 text-sm text-gray-700">
+
+                <span className="font-semibold text-amber-800">Fragrance:</span>
+                <span className="bg-amber-50 text-amber-700 px-3 py-1 rounded-full">
+                  {product.fragrance || "N/A"}
+                </span>
+
+                <span className="font-semibold text-amber-800">Intensity:</span>
+                <span className="bg-orange-50 text-orange-700 px-3 py-1 rounded-full">
+                  {product.intensity || "N/A"}
+                </span>
+
+              </div> */}
+
+            </div>
+
+
 
               {/* Price */}
               <div className="mb-6">
@@ -392,6 +432,7 @@ const ProductDetailPage = () => {
                     <button onClick={() => handleQuantityChange("increment")} className="px-5 text-amber-700 font-bold hover:text-amber-800 text-xl">
                       <FiPlus />
                     </button>
+                    
                   </div>
                 )}
               </div>

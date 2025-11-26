@@ -8,37 +8,37 @@ import { FiHeadphones, FiGlobe } from "react-icons/fi";
 const WhyChooseUsSection = () => {
   const reasons = [
     {
-      icon: <MdOutlineWorkspacePremium className="text-amber-700" size={50} />,
+      icon: <MdOutlineWorkspacePremium className="text-black" size={50} />,
       title: "Premium Quality",
-      desc: "Each fragrance is crafted with precision and passion to deliver long-lasting, luxurious aromas that define true elegance.",
+      desc: "Crafted with finest ingredients",
     },
     {
-      icon: <IoIosPricetags className="text-amber-700" size={50} />,
+      icon: <IoIosPricetags className="text-black" size={50} />,
       title: "Better Pricing",
-      desc: "We offer premium fragrances at honest prices — cutting out unnecessary markups without compromising on quality.",
+      desc: "Top-grade fragrances at the most competitive industry rates.",
     },
     {
-      icon: <CiBeaker1 className="text-amber-700" size={50} />,
-      title: "Pure Raw Materials",
-      desc: "Our ingredients are sourced from trusted suppliers, ensuring purity and consistency in every drop.",
+      icon: <CiBeaker1 className="text-black" size={50} />,
+      title: "Raw Materials",
+      desc: "Selecting finest ingredients across globe.",
     },
     {
-      icon: <PiCertificate className="text-amber-700" size={50} />,
+      icon: <PiCertificate className="text-black" size={50} />,
       title: "ISO Certified",
-      desc: "Our products are ISO-certified, meeting the highest international standards for safety, quality, and sustainability.",
+      desc: "Certified quality management ensuring consistency and reliability in every batch.",
     },
   ];
 
   const extra = [
     {
-      icon: <FiHeadphones className="text-amber-700" size={45} />,
+      icon: <FiHeadphones className="text-black" size={45} />,
       title: "24/7 Support",
-      desc: "We’re here for you anytime — your satisfaction is our top priority.",
+      desc: "Reliable support whenever you need it. ",
     },
     {
-      icon: <FiGlobe className="text-amber-700" size={45} />,
+      icon: <FiGlobe className="text-black" size={45} />,
       title: "Worldwide Shipping",
-      desc: "Delivering MZ Aromas’ luxury experience across the globe — fast, reliable, and secure.",
+      desc: "Reliable international shipping with secure packaging and timely delivery.",
     },
   ];
 
@@ -68,7 +68,7 @@ const WhyChooseUsSection = () => {
         >
           Why Choose{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-700 to-yellow-600">
-            MZ Aromas?
+            US?
           </span>
         </h2>
 
@@ -77,7 +77,7 @@ const WhyChooseUsSection = () => {
           {reasons.map((item, i) => (
             <div
               key={i}
-              className="group bg-white p-8 rounded-2xl border border-amber-100 hover:border-amber-500 shadow-[0_4px_15px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_25px_rgba(255,193,7,0.2)] hover:-translate-y-2 transition-all duration-700"
+              className="group  p-8 rounded-2xl  hover:border-amber-500 shadow-[0_4px_15px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_25px_rgba(255,193,7,0.2)] hover:-translate-y-2 transition-all duration-700"
               style={{
                 animation: "fadeUp 0.9s ease forwards",
                 animationDelay: `${i * 0.15 + 0.3}s`,
@@ -103,7 +103,7 @@ const WhyChooseUsSection = () => {
           {extra.map((item, i) => (
             <div
               key={i}
-              className="group bg-white p-8 rounded-2xl border border-amber-100 hover:border-amber-500 shadow-[0_4px_15px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_25px_rgba(255,193,7,0.2)] hover:-translate-y-2 transition-all duration-700"
+              className="group  p-8 rounded-2xl  hover:border-amber-500 shadow-[0_4px_15px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_25px_rgba(255,193,7,0.2)] hover:-translate-y-2 transition-all duration-700"
               style={{
                 animation: "fadeUp 0.9s ease forwards",
                 animationDelay: `${i * 0.15 + 0.9}s`,

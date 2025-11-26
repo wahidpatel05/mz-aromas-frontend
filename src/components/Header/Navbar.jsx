@@ -79,13 +79,13 @@ const Navbar = () => {
             </div>
 
             <a
-              href="https://www.instagram.com/mz.aromas"
+              href="https://www.instagram.com/mz_aromas"
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-1.5 hover:text-amber-700 transition"
             >
               <FiInstagram size={13} />
-              <span>@mz.aromas</span>
+              <span>@mz_aromas</span>
             </a>
 
             <a
@@ -227,7 +227,7 @@ const Navbar = () => {
       </nav>
 
       {/* Centered Tagline Bar */}
-      <div className="w-full bg-gradient-to-r from-amber-100 via-amber-150 to-amber-100 py-3 border-t border-amber-200 text-center">
+      <div className="w-full bg-linear-to-r from-amber-100 via-amber-150 to-amber-100 py-3 border-t border-amber-200 text-center">
         <p className="text-sm sm:text-base font-semibold tracking-wide text-black uppercase flex items-center justify-center gap-2">
           <GiFactory className="text-black text-3xl sm:text-xl" />
           Manufacturers and Exporters of Perfume Oils, Industrial Fragrances,
@@ -258,12 +258,12 @@ const Navbar = () => {
          transition-all duration-300 z-50"
       >
         {[
-          "Perfume Oil",
-          "Aroma Chemicals",
+          "Perfume Oils",
+          "Attar Roll-Ons",
           "Agarbatti",
           "Bakhoor",
           "Airfreshner",
-          "Roll On",
+          "Bottles",
         ].map((sub) => (
           <Link
             key={sub}

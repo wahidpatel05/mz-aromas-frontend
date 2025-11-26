@@ -16,6 +16,10 @@ const OrderDetailPage = () => {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // ⭐ Tracking ID state
+  const [courierName, setCourierName] = useState("");
+  const [trackingId, setTrackingId] = useState("");
+
   useEffect(() => {
     fetchOrderDetails();
   }, [id]);
@@ -24,6 +28,11 @@ const OrderDetailPage = () => {
     try {
       const { data } = await API.get(`/order/${id}`);
       setOrder(data.order);
+
+      // ⭐ Set default tracking ID when order loads
+      setCourierName(data.order?.courierName || "");
+      setTrackingId(data.order?.trackingId || "");
+
       setLoading(false);
     } catch (error) {
       toast.error("Failed to fetch order details");
@@ -50,6 +59,21 @@ const OrderDetailPage = () => {
       } catch (error) {
         toast.error("Failed to delete order");
       }
+    }
+  };
+
+  // ⭐ Update Tracking ID Handler
+  const handleTrackingIdUpdate = async () => {
+    try {
+      await API.put(`/admin/order/${id}/tracking`, {
+        courierName,
+        trackingId,
+      });
+
+      toast.success("Tracking details updated");
+      fetchOrderDetails();
+    } catch (error) {
+      toast.error("Failed to update tracking details");
     }
   };
 
@@ -85,6 +109,7 @@ const OrderDetailPage = () => {
   return (
     <div className="bg-gradient-to-br from-amber-50 via-white to-amber-100 min-h-screen py-10 px-4">
       <div className="max-w-7xl mx-auto">
+        
         {/* Header */}
         <div className="mb-10">
           <button
@@ -117,8 +142,10 @@ const OrderDetailPage = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
+
             {/* Order Items */}
             <div className="bg-white border border-amber-100 rounded-2xl shadow-sm hover:shadow-md transition-all p-8">
               <h2 className="text-2xl font-semibold text-amber-900 mb-6 flex items-center">
@@ -231,7 +258,8 @@ const OrderDetailPage = () => {
 
           {/* Sidebar */}
           <div className="space-y-8">
-            {/* Summary */}
+
+            {/* Order Summary */}
             <div className="bg-white border border-amber-100 rounded-2xl shadow-sm hover:shadow-md transition-all p-8">
               <h2 className="text-2xl font-semibold text-amber-900 mb-6">
                 Order Summary
@@ -263,6 +291,64 @@ const OrderDetailPage = () => {
                 </div>
               </div>
             </div>
+
+            {/* ⭐ Update Tracking ID */}
+<div className="bg-white border border-amber-100 rounded-2xl shadow-sm hover:shadow-md transition-all p-8">
+  <h2 className="text-2xl font-semibold text-amber-900 mb-6">
+    Tracking Information
+  </h2>
+
+  {/* Courier Name */}
+  <input
+    type="text"
+    value={courierName}
+    onChange={(e) => setCourierName(e.target.value)}
+    placeholder="Enter Courier Name (e.g. BlueDart, Anjani)"
+    className="w-full border px-3 py-2 rounded-lg mb-3 focus:ring-2 focus:ring-amber-500"
+  />
+
+  {/* Tracking ID */}
+  <input
+    type="text"
+    value={trackingId}
+    onChange={(e) => setTrackingId(e.target.value)}
+    placeholder="Enter Tracking ID / AWB Number"
+    className="w-full border px-3 py-2 rounded-lg focus:ring-2 focus:ring-amber-500"
+  />
+
+  {/* Save */}
+  <button
+    onClick={handleTrackingIdUpdate}
+    className="w-full mt-3 bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-xl font-semibold transition"
+  >
+    Save Tracking Details
+  </button>
+
+  {/* Show saved details */}
+  {(order.courierName || order.trackingId) && (
+    <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex flex-col gap-2">
+      <p className="text-sm text-amber-800 font-medium">
+        <span className="font-semibold">Courier:</span> {order.courierName || "—"}
+      </p>
+      <div className="flex items-center justify-between">
+        <p className="text-sm text-amber-800 font-medium">
+          <span className="font-semibold">Tracking ID:</span> {order.trackingId}
+        </p>
+
+        {/* Copy Button */}
+        <button
+          className="bg-amber-600 text-white px-3 py-1 text-xs rounded-md hover:bg-amber-700"
+          onClick={() => {
+            navigator.clipboard.writeText(order.trackingId);
+            toast.success("Tracking ID copied!");
+          }}
+        >
+          Copy
+        </button>
+      </div>
+    </div>
+  )}
+</div>
 
             {/* Update Status */}
             <div className="bg-white border border-amber-100 rounded-2xl shadow-sm hover:shadow-md transition-all p-8">
@@ -300,6 +386,7 @@ const OrderDetailPage = () => {
                 </button>
               </div>
             </div>
+
           </div>
         </div>
       </div>
